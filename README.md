@@ -109,7 +109,7 @@ To use the AID (AI-Driven Editor) web component, you'll need to set the `OPENAI_
 Clone the project
 
 ```bash
-git clone https://github.com/smilee02/writer-assistant
+git clone https://github.com/smilee02/writer-assistant.git
 ```
 
 Go to the project directory
@@ -139,7 +139,7 @@ Add to your HTML file
 And to use the component
 
 ```
-<aid></aid>
+<writer-assistant></writer-assistant>
 ```
 
 HTML file
@@ -164,7 +164,7 @@ HTML file
 To run tests, run the following command
 
 ```bash
-  npm run test
+npm run test
 ```
 
 ## Authors
