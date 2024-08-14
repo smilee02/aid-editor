@@ -137,14 +137,51 @@ export default class Writer extends LitElement {
   private toggleOverlay() {
     this.overlayVisible = !this.overlayVisible;
     try {
-      if (!this.overlayVisible) {
-        clearOpenAIInstance();
-      } else {
+      if (this.overlayVisible) {
         getOpenAIInstance();
+        this.performUpdate();
+        if (this.generatedTextArea) {
+          var text = this.getTextSelection();
+          this.generatedTextArea!.value = text;
+        }
+      } else {
+        clearOpenAIInstance();
+        this.overwriteTextSelection();
       }
     } catch (error) {
       this.showAlert((error as Error).message);
     }
+  }
+
+  private getTextSelection() {
+    const iframes = document.querySelectorAll("iframe");
+    if (iframes.length > 0) {
+      for (var i = 0; i < iframes.length; i++) {
+        const contentWindow = iframes[i].contentWindow;
+        const selectedText = contentWindow!.getSelection()!.toString();
+        if (selectedText.length > 0) {
+          return selectedText;
+        }
+      }
+    }
+    return "";
+  }
+
+  private overwriteTextSelection() {
+    const iframes = document.querySelectorAll("iframe");
+    if (iframes.length > 0) {
+      for (var i = 0; i < iframes.length; i++) {
+        const contentWindow = iframes[i].contentWindow;
+        const selected = contentWindow!.getSelection()!;
+        if (selected.rangeCount) {
+          var range = selected.getRangeAt(0);
+          range.deleteContents();
+          const text = this.generatedTextArea!.value;
+          range.insertNode(document.createTextNode(text));
+        }
+      }
+    }
+    return "";
   }
 
   /**
@@ -158,8 +195,8 @@ export default class Writer extends LitElement {
    * Closes all overlays (main and theme input).
    */
   private closeOverlays() {
-    this.overlayVisible = false;
     this.themeOverlayVisible = false;
+    this.toggleOverlay();
   }
 
   /**

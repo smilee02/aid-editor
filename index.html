@@ -5,8 +5,222 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>A.I.D - AI-Driven Editor Demo</title>
     <script type="module" src="./dist/writer-assistant.min.js"></script>
+    <script src="https://editor.unlayer.com/embed.js"></script>
+    <style>
+div#editor-container { height: 600px }
+    </style>
   </head>
   <body>
     <writer-assistant></writer-assistant>
+    <div id="editor-container"></div>
+    <script>
+unlayer.init({
+  id: 'editor-container',
+});
+var json = `{
+    "counters": {
+        "u_column": 1,
+        "u_row": 1,
+        "u_content_heading": 1,
+        "u_content_text": 1,
+        "u_content_html": 1
+    },
+    "body": {
+        "id": "H2HUxEK3BD",
+        "rows": [{
+            "id": "f1maPwlCkx",
+            "cells": [1],
+            "columns": [{
+                "id": "5deFI4DzT4",
+                "contents": [{
+                    "id": "t1kmuCO3Cx",
+                    "type": "heading",
+                    "values": {
+                        "containerPadding": "10px",
+                        "anchor": "",
+                        "headingType": "h1",
+                        "fontSize": "22px",
+                        "textAlign": "left",
+                        "lineHeight": "140%",
+                        "linkStyle": {
+                            "inherit": true,
+                            "linkColor": "#0000ee",
+                            "linkHoverColor": "#0000ee",
+                            "linkUnderline": true,
+                            "linkHoverUnderline": true
+                        },
+                        "displayCondition": null,
+                        "_meta": {
+                            "htmlID": "u_content_heading_1",
+                            "htmlClassNames": "u_content_heading",
+                            "description": ""
+                        },
+                        "selectable": true,
+                        "draggable": true,
+                        "duplicatable": true,
+                        "deletable": true,
+                        "hideable": true,
+                        "text": "<span><span><span><span>Demo text<br /></span></span></span></span>",
+                        "_languages": {}
+                    }
+                }, {
+                    "id": "zNWQxTWxnf",
+                    "type": "text",
+                    "values": {
+                        "containerPadding": "10px",
+                        "anchor": "",
+                        "fontSize": "14px",
+                        "textAlign": "left",
+                        "lineHeight": "140%",
+                        "linkStyle": {
+                            "inherit": true,
+                            "linkColor": "#0000ee",
+                            "linkHoverColor": "#0000ee",
+                            "linkUnderline": true,
+                            "linkHoverUnderline": true
+                        },
+                        "displayCondition": null,
+                        "_meta": {
+                            "htmlID": "u_content_text_1",
+                            "htmlClassNames": "u_content_text",
+                            "description": ""
+                        },
+                        "selectable": true,
+                        "draggable": true,
+                        "duplicatable": true,
+                        "deletable": true,
+                        "hideable": true,
+                        "text": "<p style=\\"line-height: 140%;\\">Este é um campo de texto formatado, que irá conter a história do Don Pelo, o camelo que viaja pelo mundo.</p>",
+                        "_languages": {}
+                    }
+                }, {
+                    "id": "0ipIZpeYC_",
+                    "type": "html",
+                    "values": {
+                        "html": "This is an HTML block. HTML is a markup language made famous by <em>Tim Berners-Lee</em>",
+                        "displayCondition": null,
+                        "containerPadding": "10px",
+                        "anchor": "",
+                        "_meta": {
+                            "htmlID": "u_content_html_1",
+                            "htmlClassNames": "u_content_html",
+                            "description": ""
+                        },
+                        "selectable": true,
+                        "draggable": true,
+                        "duplicatable": true,
+                        "deletable": true,
+                        "hideable": true
+                    }
+                }],
+                "values": {
+                    "border": {},
+                    "padding": "0px",
+                    "backgroundColor": "",
+                    "_meta": {
+                        "htmlID": "u_column_1",
+                        "htmlClassNames": "u_column"
+                    }
+                }
+            }],
+            "values": {
+                "displayCondition": null,
+                "columns": false,
+                "backgroundColor": "",
+                "columnsBackgroundColor": "",
+                "backgroundImage": {
+                    "url": "",
+                    "fullWidth": true,
+                    "repeat": "no-repeat",
+                    "size": "custom",
+                    "position": "center"
+                },
+                "padding": "0px",
+                "anchor": "",
+                "hideDesktop": false,
+                "_meta": {
+                    "htmlID": "u_row_1",
+                    "htmlClassNames": "u_row",
+                    "description": ""
+                },
+                "selectable": true,
+                "draggable": true,
+                "duplicatable": true,
+                "deletable": true,
+                "hideable": true
+            }
+        }],
+        "headers": [],
+        "footers": [],
+        "values": {
+            "popupPosition": "center",
+            "popupWidth": "600px",
+            "popupHeight": "auto",
+            "borderRadius": "10px",
+            "contentAlign": "center",
+            "contentVerticalAlign": "center",
+            "contentWidth": "500px",
+            "fontFamily": {
+                "label": "Arial",
+                "value": "arial,helvetica,sans-serif"
+            },
+            "textColor": "#000000",
+            "popupBackgroundColor": "#FFFFFF",
+            "popupBackgroundImage": {
+                "url": "",
+                "fullWidth": true,
+                "repeat": "no-repeat",
+                "size": "cover",
+                "position": "center"
+            },
+            "popupOverlay_backgroundColor": "rgba(0, 0, 0, 0.1)",
+            "popupCloseButton_position": "top-right",
+            "popupCloseButton_backgroundColor": "#DDDDDD",
+            "popupCloseButton_iconColor": "#000000",
+            "popupCloseButton_borderRadius": "0px",
+            "popupCloseButton_margin": "0px",
+            "popupCloseButton_action": {
+                "name": "close_popup",
+                "attrs": {
+                    "onClick": "document.querySelector('.u-popup-container').style.display = 'none';"
+                }
+            },
+            "language": {},
+            "backgroundColor": "#F9F9F9",
+            "preheaderText": "",
+            "linkStyle": {
+                "body": true,
+                "linkColor": "#0000ee",
+                "linkHoverColor": "#0000ee",
+                "linkUnderline": true,
+                "linkHoverUnderline": true
+            },
+            "backgroundImage": {
+                "url": "",
+                "fullWidth": true,
+                "repeat": "no-repeat",
+                "size": "custom",
+                "position": "center"
+            },
+            "_meta": {
+                "htmlID": "u_body",
+                "htmlClassNames": "u_body"
+            }
+        }
+    },
+    "schemaVersion": 16
+}
+`
+unlayer.loadDesign(JSON.parse(json));
+
+unlayer.addEventListener('design:updated', function(updates) {
+  // Design is updated by the user
+  console.log("fui atualizado")
+  unlayer.exportHtml(function(data) {
+    var json = data.design; // design json
+    var html = data.html; // design html
+  })
+})
+    </script>    
   </body>
 </html>

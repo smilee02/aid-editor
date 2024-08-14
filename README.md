@@ -159,6 +159,14 @@ HTML file
 </html>
 ```
 
+<br>
+
+### Note
+
+Or you can try the index.html existent
+
+At the moment make sure you are running chrome using _--disable-web-security_
+
 ## Running Tests
 
 To run tests, run the following command
@@ -184,3 +192,4 @@ Lit, HTML, CSS
 - Web Component receive default browser language
 - Spinner when request is done
 - Markdown to HTML converter for text
+- Integratio with Unlayer
