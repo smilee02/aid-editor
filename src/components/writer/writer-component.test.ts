@@ -218,8 +218,6 @@ describe("<writer-assistant> functionalities", () => {
     element.generatedTextArea?.select();
     await element.updateComplete;
 
-    console.log(element.generatedTextArea!.value);
-
     const expandButton = toolbar.shadowRoot!.querySelector(
       ".expand-content"
     ) as HTMLButtonElement;

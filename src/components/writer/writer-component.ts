@@ -11,6 +11,7 @@ import {
   clearOpenAIInstance,
   getOpenAIInstance,
 } from "../../services/openai-service.js";
+import LocalizationService from "../../services/localization-service.js";
 
 /**
  * @summary Writer component provides the main interface for creating, expanding, and shortening articles using AI-driven services.
@@ -82,6 +83,12 @@ export default class Writer extends LitElement {
   @property({ type: Boolean })
   showConfirmModal = false;
 
+  /**
+   * Locale of the component
+   */
+  @property({ type: String })
+  locale = "";
+
   @query("#article-theme")
   articleThemeInput: HTMLInputElement | undefined;
 
@@ -106,6 +113,12 @@ export default class Writer extends LitElement {
    */
   shortenArticleService: ShortenArticleService;
 
+  /**
+   * Service for localization.
+   * @type {LocalizationService}
+   */
+  i18nextService: LocalizationService;
+
   constructor() {
     super();
     this.writeArticleService = new WriteArticleService(
@@ -120,6 +133,20 @@ export default class Writer extends LitElement {
       this.showAlert.bind(this),
       this.showConfirm.bind(this)
     );
+    this.i18nextService = LocalizationService.getInstance();
+  }
+
+  /**
+   * Called when the element has been connected to the DOM for the first time.
+   * Ensures that the locale is properly set after the element is initialized.
+   */
+  firstUpdated() {
+    console.log(this.locale);
+    if (this.locale) {
+      this.i18nextService.setLocale(this.locale);
+    } else {
+      this.i18nextService.setLocale(navigator.language);
+    }
   }
 
   /**
@@ -271,7 +298,7 @@ export default class Writer extends LitElement {
    */
   private buttonOverlay() {
     return html`<button class="assistant-button" @click=${this.toggleOverlay}>
-      Assistant
+      ${this.i18nextService.t("writer.buttons.assistant")}
     </button>`;
   }
 
@@ -310,9 +337,15 @@ export default class Writer extends LitElement {
     return this.themeOverlayVisible
       ? html`
           <div class="theme-overlay">
-            <h1 class="theme-title">Theme for article</h1>
-            <input id="article-theme" placeholder="Write about..."></input>
-            <button class="theme-button" @click="${this.generateArticle}">Generate</button>
+            <h1 class="theme-title">${this.i18nextService.t(
+              "writer.overlays.themeTitle"
+            )}</h1>
+            <input id="article-theme" placeholder=${this.i18nextService.t(
+              "writer.overlays.themePlaceholder"
+            )}></input>
+            <button class="theme-button" @click="${
+              this.generateArticle
+            }">${this.i18nextService.t("writer.buttons.generate")}</button>
           </div>
         `
       : null;
@@ -328,7 +361,9 @@ export default class Writer extends LitElement {
       <textarea
         id="text-area-generated"
         class="generated-text"
-        placeholder="Generated text..."
+        placeholder=${this.i18nextService.t(
+          "writer.overlays.generatedTextPlaceholder"
+        )}
       ></textarea>
       ${this.themeOverlay()}
     </div>`;

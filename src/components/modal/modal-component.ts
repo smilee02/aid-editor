@@ -1,6 +1,7 @@
 import { html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ModalComponentStyle } from "./modal-component.style.js";
+import LocalizationService from "../../services/localization-service.js";
 
 /**
  * @summary ModalComponent provides a basic modal dialog for displaying messages.
@@ -50,6 +51,17 @@ export class ModalComponent extends LitElement {
   type = "";
 
   /**
+   * Service for localization.
+   * @type {LocalizationService}
+   */
+  i18nextService: LocalizationService;
+
+  constructor() {
+    super();
+    this.i18nextService = LocalizationService.getInstance();
+  }
+
+  /**
    * Closes the modal and dispatches a "confirm" event with `false` as the detail.
    * This is used to cancel the action when the user clicks outside the modal or on the cancel button.
    */
@@ -86,12 +98,16 @@ export class ModalComponent extends LitElement {
         <div class="modal-buttons">
           ${this.type === "confirm"
             ? html`
-                <button class="confirm" @click=${this.handleConfirm}>Ok</button>
+                <button class="confirm" @click=${this.handleConfirm}>
+                  ${this.i18nextService.t("modal.buttons.ok")}
+                </button>
                 <button class="close" @click=${this.handleCancel}>
-                  Cancel
+                  ${this.i18nextService.t("modal.buttons.cancel")}
                 </button>
               `
-            : html`<button class="confirm" @click=${this.close}>Ok</button>`}
+            : html`<button class="confirm" @click=${this.close}>
+                ${this.i18nextService.t("modal.buttons.ok")}
+              </button>`}
         </div>
       </div>
     `;

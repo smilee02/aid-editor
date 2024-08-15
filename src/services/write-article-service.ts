@@ -1,3 +1,4 @@
+import LocalizationService from "./localization-service";
 import { sendRequest } from "./openai-service";
 
 /**
@@ -15,6 +16,11 @@ export default class WriteArticleService {
   showConfirm;
 
   /**
+   * Service for localization.
+   * @type {LocalizationService}
+   */
+  localizationService: LocalizationService;
+  /**
    * @param {(message: string) => void} alertCallback - Callback function to display an alert.
    * @param {(message: string) => Promise<boolean>} confirmCallback - Callback function to display a confirmation dialog.
    */
@@ -24,6 +30,7 @@ export default class WriteArticleService {
   ) {
     this.showAlert = alertCallback;
     this.showConfirm = confirmCallback;
+    this.localizationService = LocalizationService.getInstance();
   }
 
   /**
@@ -42,7 +49,7 @@ export default class WriteArticleService {
   ) {
     if (!articleThemeInput || articleThemeInput.value.trim() === "") {
       this.showAlert(
-        "Input field is empty. It's not possible to send an empty theme."
+        this.localizationService.t("modal.messages.alert.emptyInputThemeField")
       );
       return;
     }
@@ -51,7 +58,9 @@ export default class WriteArticleService {
 
     if (hasExistingContent) {
       const overwrite = await this.showConfirm(
-        "Do you want to overwrite the existing text?"
+        this.localizationService.t(
+          "modal.messages.confirm.overwriteExistingText"
+        )
       );
       if (overwrite) {
         await this.fetchGeneratedContent(

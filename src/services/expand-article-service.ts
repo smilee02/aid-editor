@@ -1,3 +1,4 @@
+import LocalizationService from "./localization-service";
 import { sendRequest } from "./openai-service";
 
 /**
@@ -13,7 +14,11 @@ import { sendRequest } from "./openai-service";
 export default class ExpandArticleService {
   showAlert;
   showConfirm;
-
+  /**
+   * Service for localization.
+   * @type {LocalizationService}
+   */
+  localizationService: LocalizationService;
   /**
    * @param {(message: string) => void} alertCallback - Callback function to display an alert.
    * @param {(message: string) => Promise<boolean>} confirmCallback - Callback function to display a confirmation dialog.
@@ -24,6 +29,7 @@ export default class ExpandArticleService {
   ) {
     this.showAlert = alertCallback;
     this.showConfirm = confirmCallback;
+    this.localizationService = LocalizationService.getInstance();
   }
 
   /**
@@ -41,17 +47,19 @@ export default class ExpandArticleService {
     );
 
     if (selectedText === "") {
-      this.showAlert("Please select text to rewrite.");
+      this.showAlert(
+        this.localizationService.t("modal.messages.alert.selectText")
+      );
       return;
     }
 
-    this.showConfirm("Do you want to overwrite the selected text?").then(
-      async (overwrite) => {
-        if (overwrite) {
-          await this.fetchExpandedContent(textArea, writingStyle);
-        }
+    this.showConfirm(
+      this.localizationService.t("modal.messages.confirm.overwriteSelectedText")
+    ).then(async (overwrite) => {
+      if (overwrite) {
+        await this.fetchExpandedContent(textArea, writingStyle);
       }
-    );
+    });
   }
 
   /**

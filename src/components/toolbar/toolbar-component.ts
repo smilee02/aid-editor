@@ -1,6 +1,7 @@
 import { html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ToolbarComponentStyle } from "./toolbar-component.style.js";
+import LocalizationService from "../../services/localization-service.js";
 
 /**
  * @summary ToolbarComponent provides a set of controls to interact with the AID - AI-Driven Editor.
@@ -65,6 +66,17 @@ export class ToolbarComponent extends LitElement {
   static styles = ToolbarComponentStyle;
 
   /**
+   * Service for localization.
+   * @type {LocalizationService}
+   */
+  i18nextService: LocalizationService;
+
+  constructor() {
+    super();
+    this.i18nextService = LocalizationService.getInstance();
+  }
+
+  /**
    * Handles changes to the writing style.
    * @param {Event} e - The event triggered when the writing style is changed.
    */
@@ -84,38 +96,46 @@ export class ToolbarComponent extends LitElement {
             @change="${this.handleWritingStyleChange}"
           >
             <option value="formal" ?selected=${this.writingStyle === "formal"}>
-              Formal
+              ${this.i18nextService.t("toolbar.writingStyles.formal")}
             </option>
             <option value="casual" ?selected=${this.writingStyle === "casual"}>
-              Casual
+              ${this.i18nextService.t("toolbar.writingStyles.casual")}
             </option>
             <option
               value="scientific"
               ?selected=${this.writingStyle === "scientific"}
             >
-              Scientific
+              ${this.i18nextService.t("toolbar.writingStyles.scientific")}
             </option>
           </select>
-          <span class="tooltip">Writing style</span>
+          <span class="tooltip"
+            >${this.i18nextService.t("toolbar.tooltips.writingStyle")}</span
+          >
         </div>
         <div class="toolbar-buttons">
           <div class="button-container" style="position: relative;">
             <button class="article-writer" @click=${this.onToggleThemeOverlay}>
               📝
             </button>
-            <span class="tooltip">Create a new article</span>
+            <span class="tooltip"
+              >${this.i18nextService.t("toolbar.tooltips.createArticle")}</span
+            >
           </div>
           <div class="button-container" style="position: relative;">
             <button class="expand-content" @click=${this.onExpandContent}>
               ➕
             </button>
-            <span class="tooltip">Expand the selected content</span>
+            <span class="tooltip"
+              >${this.i18nextService.t("toolbar.tooltips.expandContent")}</span
+            >
           </div>
           <div class="button-container" style="position: relative;">
             <button class="shorten-content" @click=${this.onShortenContent}>
               ➖
             </button>
-            <span class="tooltip">Shorten the selected content</span>
+            <span class="tooltip"
+              >${this.i18nextService.t("toolbar.tooltips.shortenContent")}</span
+            >
           </div>
         </div>
         <button
