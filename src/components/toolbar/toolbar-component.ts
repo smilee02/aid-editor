@@ -89,7 +89,7 @@ export class ToolbarComponent extends LitElement {
   render() {
     return html`
       <div class="toolbar">
-        <div class="select-wrapper">
+        <div class="select-wrapper" style="position: relative;">
           <select
             id="writing-style-select"
             aria-label="Writing Style"
