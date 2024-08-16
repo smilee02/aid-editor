@@ -133,19 +133,11 @@ export default class Writer extends LitElement {
       this.showAlert.bind(this),
       this.showConfirm.bind(this)
     );
-    this.i18nextService = LocalizationService.getInstance();
-  }
 
-  /**
-   * Called when the element has been connected to the DOM for the first time.
-   * Ensures that the locale is properly set after the element is initialized.
-   */
-  firstUpdated() {
-    console.log(this.locale);
     if (this.locale) {
-      this.i18nextService.setLocale(this.locale);
+      this.i18nextService = LocalizationService.getInstance(this.locale);
     } else {
-      this.i18nextService.setLocale(navigator.language);
+      this.i18nextService = LocalizationService.getInstance(navigator.language);
     }
   }
 

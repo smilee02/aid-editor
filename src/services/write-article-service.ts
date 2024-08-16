@@ -96,7 +96,9 @@ export default class WriteArticleService {
     if (!articleThemeInput) return;
 
     const inputValue = articleThemeInput.value.trim();
-    const prompt = `Write me an article about ${inputValue} in ${writingStyle} writing style`;
+    const prompt =
+      `Write me an article about ${inputValue} in ${writingStyle} writing style in ` +
+      this.localizationService.getLocale();
 
     const response = await this.sendRequest(prompt);
     if (response) {

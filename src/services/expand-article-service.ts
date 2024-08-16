@@ -75,7 +75,9 @@ export default class ExpandArticleService {
   ) {
     if (!textArea) return;
 
-    const prompt = `Rewrite me this text "${textArea.value}" in ${writingStyle} writing style while expanding it`;
+    const prompt =
+      `Rewrite me this text "${textArea.value}" in ${writingStyle} writing style while expanding it in ` +
+      this.localizationService.getLocale();
 
     const response = await this.sendRequest(prompt);
     if (response) {

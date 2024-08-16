@@ -6,23 +6,31 @@ class LocalizationService {
   private static instance: LocalizationService;
   private defaultLocale = "en-US";
   private fallbackLocale = "en-US";
+  private locale = "";
 
-  private constructor() {
+  private constructor(locale?: string) {
+    this.initializeI18next(locale);
+  }
+
+  public static getInstance(locale?: string): LocalizationService {
+    if (!LocalizationService.instance) {
+      LocalizationService.instance = new LocalizationService(locale);
+    } else if (locale && locale !== LocalizationService.instance.locale) {
+      LocalizationService.instance.setLocale(locale);
+    }
+    return LocalizationService.instance;
+  }
+
+  private initializeI18next(locale?: string): void {
     i18next.use(LanguageDetector).init({
       resources: phrases,
       fallbackLng: this.fallbackLocale,
-      lng: this.defaultLocale,
+      lng: locale ? locale : this.defaultLocale,
       interpolation: {
         escapeValue: false,
       },
     });
-  }
-
-  public static getInstance(): LocalizationService {
-    if (!LocalizationService.instance) {
-      LocalizationService.instance = new LocalizationService();
-    }
-    return LocalizationService.instance;
+    this.locale = locale ? locale : this.defaultLocale;
   }
 
   public getLocale(): string {
@@ -31,6 +39,7 @@ class LocalizationService {
 
   public setLocale(locale: string): void {
     i18next.changeLanguage(locale);
+    this.locale = locale;
   }
 
   public t(key: string, options?: any): string {
