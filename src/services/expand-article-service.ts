@@ -77,7 +77,8 @@ export default class ExpandArticleService {
 
     const prompt =
       `Rewrite me this text "${textArea.value}" in ${writingStyle} writing style while expanding it in ` +
-      this.localizationService.getLocale();
+      this.localizationService.getLocale() +
+      ". Use <br> between paragraphs";
 
     const response = await this.sendRequest(prompt);
     if (response) {

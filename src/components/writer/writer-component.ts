@@ -89,6 +89,12 @@ export default class Writer extends LitElement {
   @property({ type: String })
   locale = "";
 
+  /**
+   * Loading spinner
+   */
+  @property({ type: Boolean })
+  isLoading: boolean = false;
+
   @query("#article-theme")
   articleThemeInput: HTMLInputElement | undefined;
 
@@ -223,13 +229,19 @@ export default class Writer extends LitElement {
    * @returns {Promise<void>}
    */
   private async generateArticle() {
-    await this.writeArticleService.generateArticle(
-      this.articleThemeInput!,
-      this.generatedTextArea!,
-      this.writingStyle
-    );
-
-    this.themeOverlayVisible = false;
+    this.isLoading = true;
+    try {
+      await this.writeArticleService.generateArticle(
+        this.articleThemeInput!,
+        this.generatedTextArea!,
+        this.writingStyle
+      );
+    } catch (error) {
+      this.showAlert((error as Error).message);
+    } finally {
+      this.isLoading = false; // Hide the spinner
+      this.themeOverlayVisible = false;
+    }
   }
 
   /**
@@ -237,10 +249,17 @@ export default class Writer extends LitElement {
    * @returns {Promise<void>}
    */
   private async expandContent() {
-    await this.expandArticleService.expandArticle(
-      this.generatedTextArea!,
-      this.writingStyle
-    );
+    this.isLoading = true;
+    try {
+      await this.expandArticleService.expandArticle(
+        this.generatedTextArea!,
+        this.writingStyle
+      );
+    } catch (error) {
+      this.showAlert((error as Error).message);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   /**
@@ -248,10 +267,17 @@ export default class Writer extends LitElement {
    * @returns {Promise<void>}
    */
   private async shortenContent() {
-    await this.shortenArticleService.shortenArticle(
-      this.generatedTextArea!,
-      this.writingStyle
-    );
+    this.isLoading = true;
+    try {
+      await this.shortenArticleService.shortenArticle(
+        this.generatedTextArea!,
+        this.writingStyle
+      );
+    } catch (error) {
+      this.showAlert((error as Error).message);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   /**
@@ -361,8 +387,16 @@ export default class Writer extends LitElement {
     </div>`;
   }
 
+  private spinner() {
+    return html`
+      <div class="spinner-overlay ${this.isLoading ? "visible" : ""}">
+        <div class="spinner"></div>
+      </div>
+    `;
+  }
+
   render() {
-    return html` ${this.buttonOverlay()} ${this.overlay()}
+    return html` ${this.buttonOverlay()} ${this.overlay()} ${this.spinner()}
       <!--Alert Modal-->
       <modal-component
         .open=${this.showAlertModal}

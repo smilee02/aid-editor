@@ -18,6 +18,7 @@
     "i18next": "^23.12.7",
     "i18next-browser-languagedetector": "^8.0.0",
     "lit": "^3.1.4",
+    "marked": "^14.0.0",
     "openai": "^4.53.2"
   },
   "devDependencies": {

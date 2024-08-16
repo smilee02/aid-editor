@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { marked } from "marked";
 
 let openaiInstance: OpenAI | null = null;
 
@@ -54,7 +55,7 @@ export async function sendRequest(
     });
 
     console.log("Received response from OpenAI:", completion);
-    return completion.choices[0].message.content!;
+    return handleResponse(completion.choices[0].message.content!);
   } catch (e) {
     showAlert((e as Error).message);
     return "";
@@ -62,5 +63,5 @@ export async function sendRequest(
 }
 
 function handleResponse(response: string) {
-  //TODO Handle ChatGPT API Response
+  return marked.parse(response);
 }

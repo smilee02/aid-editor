@@ -30,7 +30,7 @@ export const ModalComponentStyle = css`
     width: 100vw;
     height: 100vh;
     background: var(--modal-overlay-background);
-    z-index: 1000;
+    z-index: 400;
   }
 
   .modal {
@@ -42,7 +42,7 @@ export const ModalComponentStyle = css`
     border-radius: var(--modal-border-radius);
     padding: var(--modal-padding);
     box-shadow: var(--modal-shadow);
-    z-index: 1001;
+    z-index: 401;
     min-width: var(--modal-min-width);
   }
 

@@ -94,6 +94,7 @@ export const WriterComponentStyle = css`
     box-sizing: border-box;
     font-size: var(--generated-text-font-size);
     resize: none;
+    white-space: pre-wrap;
     outline: none;
     margin-top: 10px;
     background-color: var(--generated-text-background-color);
@@ -158,6 +159,46 @@ export const WriterComponentStyle = css`
     .theme-overlay button {
       width: auto;
       flex: 1;
+    }
+  }
+
+  .spinner-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background: rgba(0, 0, 0, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .spinner-overlay.visible {
+    opacity: 1;
+    pointer-events: auto; /* Enable pointer events when visible */
+  }
+
+  .spinner {
+    border: 8px solid rgba(0, 0, 0, 0.1); /* Light grey */
+    border-left: 8px solid #ff0000; /* Red */
+    border-radius: 50%;
+    width: 50px; /* Adjust the size of the spinner */
+    height: 50px; /* Adjust the size of the spinner */
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
     }
   }
 `;

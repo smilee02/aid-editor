@@ -203,7 +203,7 @@ describe("<writer-assistant> functionalities", () => {
     await element.updateComplete;
 
     expect(element.generatedTextArea!.value).to.equal(
-      "Write me an article about Test Article in formal writing style in en-US"
+      "Write me an article about Test Article in formal writing style in en-US. Use <br> between paragraphs"
     );
 
     expect(element.themeOverlayVisible).to.be.true;
