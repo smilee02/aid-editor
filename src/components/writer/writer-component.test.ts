@@ -149,7 +149,7 @@ describe("<writer-assistant> toolbar", () => {
 
     const button = element.shadowRoot?.querySelector(".theme-button");
     expect(button).to.exist;
-    expect(button?.textContent).to.equal("Generate");
+    expect(button?.textContent?.trim()).to.equal("Generate");
   });
 });
 

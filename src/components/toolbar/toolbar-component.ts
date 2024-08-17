@@ -2,6 +2,7 @@ import { html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ToolbarComponentStyle } from "./toolbar-component.style.js";
 import LocalizationService from "../../services/localization-service.js";
+import { GlobalStyles } from "../../styles/global-style.js";
 
 /**
  * @summary ToolbarComponent provides a set of controls to interact with the AID - AI-Driven Editor.
@@ -63,7 +64,7 @@ export class ToolbarComponent extends LitElement {
   @property({ attribute: false })
   onShortenContent: () => void = () => {};
 
-  static styles = ToolbarComponentStyle;
+  static styles = [GlobalStyles, ToolbarComponentStyle];
 
   /**
    * Service for localization.

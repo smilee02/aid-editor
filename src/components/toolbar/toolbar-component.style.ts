@@ -1,68 +1,21 @@
 import { css } from "lit";
 
 export const ToolbarComponentStyle = css`
-  :host {
-    --button-border-radius: 4px;
-    --button-padding: 8px 16px;
-    --button-font-size: 14px;
-    --button-background-color: #e5252c;
-    --button-color: white;
-    --button-hover-background-color: #db1d12;
-
-    --close-button-font-size: 18px;
-    --close-button-font-weight: bold;
-    --close-button-color: #555;
-    --close-button-hover-color: #000;
-
-    --toolbar-padding-bottom: 10px;
-    --toolbar-border-bottom: 1px solid #e0e0e0;
-    --toolbar-margin-bottom: 20px;
-
-    --select-border-radius: 4px;
-    --select-padding: 8px 16px;
-    --select-border-color: #e0e0e0;
-    --select-background-color: #f0f0f0;
-    --select-font-size: 14px;
-    --select-focus-border-color: #e5252c;
-
-    --tooltip-background-color: #333;
-    --tooltip-color: #fff;
-    --tooltip-border-radius: 6px;
-    --tooltip-padding: 5px;
-    --tooltip-width: 120px;
-    --tooltip-font-size: 12px;
-    --tooltip-margin-top: 5px;
-    --tooltip-opacity: 0;
-    --tooltip-visible-opacity: 1;
-    --tooltip-transition: opacity 0.3s, visibility 0.3s, margin-top 0.3s;
-    --tooltip-arrow-size: 5px;
-    --tooltip-arrow-color: #333;
-  }
-
-  /* General Styles */
-  button {
-    border: none;
-    border-radius: var(--button-border-radius);
-    padding: var(--button-padding);
-    cursor: pointer;
-    font-size: var(--button-font-size);
-    margin: 0;
-  }
-
-  button:focus {
-    outline: none;
-  }
-
   .close-button {
     background-color: transparent;
     font-size: var(--close-button-font-size);
     font-weight: var(--close-button-font-weight);
     color: var(--close-button-color);
     cursor: pointer;
+    transition: color 0.3s ease;
+    outline: none;
+    border: none;
   }
 
   .close-button:hover {
     color: var(--close-button-hover-color);
+    outline: none;
+    border: none;
   }
 
   /* Toolbar */
@@ -72,12 +25,15 @@ export const ToolbarComponentStyle = css`
     padding-bottom: var(--toolbar-padding-bottom);
     border-bottom: var(--toolbar-border-bottom);
     margin-bottom: var(--toolbar-margin-bottom);
+    background-color: var(--toolbar-background-color);
+    border-radius: var(--toolbar-border-radius);
+    box-shadow: var(--toolbar-shadow);
   }
 
   .toolbar .toolbar-buttons {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 4px;
   }
 
   .toolbar .close-button {
@@ -85,12 +41,28 @@ export const ToolbarComponentStyle = css`
   }
 
   .toolbar .toolbar-buttons button {
+    border: 1px solid transparent;
+    border-radius: var(--button-border-radius);
+    padding: var(--button-padding);
+    cursor: pointer;
+    font-size: var(--button-font-size);
+    margin: 0;
     background-color: var(--button-background-color);
-    color: var(--button-color);
+    color: var(--button-text-color);
+    transition: background-color 0.3s ease, transform 0.2s ease,
+      box-shadow 0.2s ease;
+    font-weight: 600;
+  }
+
+  .toolbar .toolbar-buttons button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary-color-light),
+      0 0 5px var(--primary-color);
   }
 
   .toolbar .toolbar-buttons button:hover {
     background-color: var(--button-hover-background-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
 
   .toolbar select {
@@ -100,12 +72,14 @@ export const ToolbarComponentStyle = css`
     background-color: var(--select-background-color);
     font-size: var(--select-font-size);
     outline: none;
-    margin-right: 2px;
+    margin-right: 4px;
     cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.2s ease;
   }
 
   .toolbar select:focus {
     border-color: var(--select-focus-border-color);
+    box-shadow: 0 0 0 2px var(--select-focus-border-color-light);
   }
 
   .toolbar .select-wrapper {
@@ -121,7 +95,7 @@ export const ToolbarComponentStyle = css`
     border-radius: var(--tooltip-border-radius);
     padding: var(--tooltip-padding);
     position: absolute;
-    z-index: 100;
+    z-index: var(--tooltip-z-index);
     top: 100%;
     left: 50%;
     transform: translateX(-50%);
@@ -130,25 +104,14 @@ export const ToolbarComponentStyle = css`
     font-size: var(--tooltip-font-size);
     opacity: var(--tooltip-opacity);
     transition: var(--tooltip-transition);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
-
-  /**Arrow Tooltip */
-  /* .tooltip::after {
-    content: "";
-    position: absolute;
-    top: calc(var(--tooltip-arrow-size) * -2);
-    left: 50%;
-    margin-left: calc(var(--tooltip-arrow-size) * -1);
-    border-width: var(--tooltip-arrow-size);
-    border-style: solid;
-    border-color: transparent transparent var(--tooltip-arrow-color) transparent;
-  }*/
 
   .button-container:hover .tooltip,
   .select-wrapper:hover .tooltip {
     visibility: visible;
     opacity: var(--tooltip-visible-opacity);
-    transition-delay: 0.5s;
+    transition-delay: 0.3s;
   }
 
   .button-container:focus-within .tooltip,

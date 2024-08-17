@@ -2,6 +2,7 @@ import { html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ModalComponentStyle } from "./modal-component.style.js";
 import LocalizationService from "../../services/localization-service.js";
+import { GlobalStyles } from "../../styles/global-style.js";
 
 /**
  * @summary ModalComponent provides a basic modal dialog for displaying messages.
@@ -27,7 +28,7 @@ import LocalizationService from "../../services/localization-service.js";
  */
 @customElement("modal-component")
 export class ModalComponent extends LitElement {
-  static styles = ModalComponentStyle;
+  static styles = [GlobalStyles, ModalComponentStyle];
 
   /**
    * Controls the visibility of the modal.

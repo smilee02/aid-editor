@@ -1,28 +1,6 @@
 import { css } from "lit";
 
 export const ModalComponentStyle = css`
-  :host {
-    --modal-background: white;
-    --modal-overlay-background: rgba(0, 0, 0, 0.5);
-    --modal-border-radius: 8px;
-    --modal-padding: 1em;
-    --modal-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    --modal-min-width: 300px;
-    --modal-font-size: 14px;
-
-    --button-border-radius: 4px;
-    --button-padding: 8px 16px;
-    --button-font-size: 14px;
-
-    --confirm-background: #e5252c;
-    --confirm-hover-background: #db1d12;
-
-    --close-background: #3b3b3b;
-    --close-hover-background: #4a4a4a;
-
-    --gap-between-buttons: 0.5em;
-  }
-
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -30,7 +8,11 @@ export const ModalComponentStyle = css`
     width: 100vw;
     height: 100vh;
     background: var(--modal-overlay-background);
-    z-index: 400;
+    z-index: var(--modal-z-index-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 
   .modal {
@@ -42,13 +24,15 @@ export const ModalComponentStyle = css`
     border-radius: var(--modal-border-radius);
     padding: var(--modal-padding);
     box-shadow: var(--modal-shadow);
-    z-index: 401;
-    min-width: var(--modal-min-width);
+    z-index: var(--modal-z-index);
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
   .modal p {
     margin-bottom: var(--modal-padding);
     font-size: var(--modal-font-size);
+    line-height: 1.5;
+    color: var(--modal-text-color);
     cursor: default;
   }
 
@@ -64,11 +48,23 @@ export const ModalComponentStyle = css`
     padding: var(--button-padding);
     cursor: pointer;
     font-size: var(--button-font-size);
-    margin: 0;
+    font-weight: 600;
+    color: var(--button-text-color);
+    background-color: var(--button-background-color);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: 1px solid transparent;
+  }
+
+  .modal-buttons button:hover,
+  .modal-buttons button:focus {
+    background-color: var(--button-hover-background-color);
+    outline: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
 
   .modal-buttons .confirm {
     background-color: var(--confirm-background);
+    color: white;
   }
 
   .modal-buttons .confirm:hover {
@@ -77,9 +73,14 @@ export const ModalComponentStyle = css`
 
   .modal-buttons .close {
     background-color: var(--close-background);
+    color: white;
   }
 
   .modal-buttons .close:hover {
     background-color: var(--close-hover-background);
+  }
+
+  .modal-buttons button:focus {
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
   }
 `;

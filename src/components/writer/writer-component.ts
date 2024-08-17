@@ -12,6 +12,7 @@ import {
   getOpenAIInstance,
 } from "../../services/openai-service.js";
 import LocalizationService from "../../services/localization-service.js";
+import { GlobalStyles } from "../../styles/global-style.js";
 
 /**
  * @summary Writer component provides the main interface for creating, expanding, and shortening articles using AI-driven services.
@@ -39,7 +40,7 @@ import LocalizationService from "../../services/localization-service.js";
  */
 @customElement("writer-assistant")
 export default class Writer extends LitElement {
-  static styles = WriterComponentStyle;
+  static styles = [GlobalStyles, WriterComponentStyle];
 
   /**
    * Controls the visibility of the main assistant overlay.
@@ -354,16 +355,19 @@ export default class Writer extends LitElement {
   private themeOverlay() {
     return this.themeOverlayVisible
       ? html`
-          <div class="theme-overlay">
-            <h1 class="theme-title">${this.i18nextService.t(
-              "writer.overlays.themeTitle"
-            )}</h1>
-            <input id="article-theme" placeholder=${this.i18nextService.t(
-              "writer.overlays.themePlaceholder"
-            )}></input>
-            <button class="theme-button" @click="${
-              this.generateArticle
-            }">${this.i18nextService.t("writer.buttons.generate")}</button>
+          <div class="backdrop-overlay" @click="${this.toggleThemeOverlay}">
+            <div class="theme-overlay" @click="${(e: Event) =>
+              e.stopPropagation()}">
+              <h1 class="theme-title">${this.i18nextService.t(
+                "writer.overlays.themeTitle"
+              )}</h1>
+              <input id="article-theme" placeholder=${this.i18nextService.t(
+                "writer.overlays.themePlaceholder"
+              )}></input>
+              <button class="theme-button" @click="${this.generateArticle}">
+                ${this.i18nextService.t("writer.buttons.generate")}
+              </button>
+            </div>
           </div>
         `
       : null;
