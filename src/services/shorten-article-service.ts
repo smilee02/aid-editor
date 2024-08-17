@@ -54,33 +54,33 @@ export default class ShortenArticleService {
       return;
     }
 
-    this.showConfirm(
+    const overwrite = await this.showConfirm(
       this.localizationService.t("modal.messages.confirm.overwriteSelectedText")
-    ).then(async (overwrite) => {
-      if (overwrite) {
-        await this.fetchShortenContent(textArea, writingStyle);
-      }
-    });
+    );
+    if (overwrite) {
+      await this.fetchShortenContent(textArea, writingStyle, selectedText);
+    }
   }
 
   /**
    * Fetches the shorten content from the OpenAI service and replaces the selected text.
    * @param {HTMLTextAreaElement} textArea - The textarea element containing the text to shorten.
    * @param {string} writingStyle - The writing style to apply when shorten the text.
+   * @param {string} selectedText - The selected text of the textarea
    * @private
    * @returns {Promise<void>}
    */
   private async fetchShortenContent(
     textArea: HTMLTextAreaElement,
-    writingStyle: string
+    writingStyle: string,
+    selectedText: string
   ) {
     if (!textArea) return;
 
     const prompt =
-      `Rewrite me this text "${textArea.value}" in ${writingStyle} writing style while shortening it in ` +
+      `Rewrite me this text "${selectedText}" in ${writingStyle} writing style while shortening it in ` +
       this.localizationService.getLocale() +
       ". Use <br> between paragraphs";
-
     const response = await this.sendRequest(prompt);
     if (response) {
       textArea.setRangeText(response);

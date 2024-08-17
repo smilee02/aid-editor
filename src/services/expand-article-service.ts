@@ -53,30 +53,31 @@ export default class ExpandArticleService {
       return;
     }
 
-    this.showConfirm(
+    const overwrite = await this.showConfirm(
       this.localizationService.t("modal.messages.confirm.overwriteSelectedText")
-    ).then(async (overwrite) => {
-      if (overwrite) {
-        await this.fetchExpandedContent(textArea, writingStyle);
-      }
-    });
+    );
+    if (overwrite) {
+      await this.fetchExpandedContent(textArea, writingStyle, selectedText);
+    }
   }
 
   /**
    * Fetches the expanded content from the OpenAI service and replaces the selected text.
    * @param {HTMLTextAreaElement} textArea - The textarea element containing the text to expand.
    * @param {string} writingStyle - The writing style to apply when expanding the text.
+   * @param {string} selectedText - The selected text of the textarea
    * @private
    * @returns {Promise<void>}
    */
   private async fetchExpandedContent(
     textArea: HTMLTextAreaElement,
-    writingStyle: string
+    writingStyle: string,
+    selectedText: string
   ) {
     if (!textArea) return;
 
     const prompt =
-      `Rewrite me this text "${textArea.value}" in ${writingStyle} writing style while expanding it in ` +
+      `Rewrite me this text "${selectedText}" in ${writingStyle} writing style while expanding it in ` +
       this.localizationService.getLocale() +
       ". Use <br> between paragraphs";
 

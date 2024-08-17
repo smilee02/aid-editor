@@ -239,7 +239,7 @@ export default class Writer extends LitElement {
     } catch (error) {
       this.showAlert((error as Error).message);
     } finally {
-      this.isLoading = false; // Hide the spinner
+      this.isLoading = false;
       this.themeOverlayVisible = false;
     }
   }
@@ -387,12 +387,18 @@ export default class Writer extends LitElement {
     </div>`;
   }
 
+  /**
+   * Renders the spinner.
+   * @returns {TemplateResult}
+   */
   private spinner() {
-    return html`
-      <div class="spinner-overlay ${this.isLoading ? "visible" : ""}">
-        <div class="spinner"></div>
-      </div>
-    `;
+    return this.isLoading
+      ? html`
+          <div class="spinner-overlay visible">
+            <div class="spinner"></div>
+          </div>
+        `
+      : null;
   }
 
   render() {
