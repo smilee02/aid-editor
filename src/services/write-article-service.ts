@@ -98,8 +98,7 @@ export default class WriteArticleService {
     const inputValue = articleThemeInput.value.trim();
     const prompt =
       `Write me an article about ${inputValue} in ${writingStyle} writing style in ` +
-      this.localizationService.getLocale() +
-      ". Use <br> between paragraphs";
+      this.localizationService.getLocale();
 
     const response = await this.sendRequest(prompt);
     if (response) {

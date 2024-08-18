@@ -79,8 +79,7 @@ export default class ShortenArticleService {
 
     const prompt =
       `Rewrite me this text "${selectedText}" in ${writingStyle} writing style while shortening it in ` +
-      this.localizationService.getLocale() +
-      ". Use <br> between paragraphs";
+      this.localizationService.getLocale();
     const response = await this.sendRequest(prompt);
     if (response) {
       textArea.setRangeText(response);

@@ -59,5 +59,5 @@ export async function sendRequest(
 }
 
 function handleResponse(response: string) {
-  return marked.parse(response);
+  return marked.parse(response, { breaks: true });
 }
