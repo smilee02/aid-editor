@@ -179,20 +179,43 @@ export default class Writer extends LitElement {
     }
   }
 
-  private getTextSelection() {
+  /**
+   * Returns the text that was selected in the document
+   * @returns {string}
+   */
+  private getTextSelection(): string {
     const iframes = document.querySelectorAll("iframe");
+    let fullSelection = "";
+
     if (iframes.length > 0) {
-      for (var i = 0; i < iframes.length; i++) {
+      for (let i = 0; i < iframes.length; i++) {
         const contentWindow = iframes[i].contentWindow;
-        const selectedText = contentWindow!.getSelection()!.toString();
-        if (selectedText.length > 0) {
-          return selectedText;
+
+        if (contentWindow) {
+          const selection = contentWindow.getSelection();
+
+          if (selection && selection.rangeCount > 0) {
+            const container = document.createElement("div");
+
+            for (let j = 0; j < selection.rangeCount; j++) {
+              container.appendChild(selection.getRangeAt(j).cloneContents());
+            }
+
+            if (container.innerHTML == "" && selection.toString() != "") {
+              fullSelection += selection.toString();
+            } else {
+              fullSelection += container.innerHTML;
+            }
+          }
         }
       }
     }
-    return "";
+    return fullSelection;
   }
 
+  /**
+   * Overwrites the text that was selected
+   */
   private overwriteTextSelection() {
     const iframes = document.querySelectorAll("iframe");
     if (iframes.length > 0) {
@@ -202,12 +225,17 @@ export default class Writer extends LitElement {
         if (selected.rangeCount) {
           var range = selected.getRangeAt(0);
           range.deleteContents();
-          const text = this.generatedTextArea!.value;
-          range.insertNode(document.createTextNode(text));
+          var div = document.createElement("div");
+          div.innerHTML = this.generatedTextArea!.value;
+          var frag = document.createDocumentFragment(),
+            child;
+          while ((child = div.firstChild) !== null) {
+            frag.appendChild(child);
+          }
+          range.insertNode(frag);
         }
       }
     }
-    return "";
   }
 
   /**
