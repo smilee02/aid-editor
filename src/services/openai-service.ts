@@ -47,7 +47,7 @@ export async function sendRequest(
           content:
             "You are an amazing writer. You will just write for me what I asked.",
         },
-        { role: "user", content: prompt },
+        { role: "user", content: prompt + ". Use <br> between paragraphs" },
       ],
       model: "gpt-4o-mini",
     });
@@ -59,5 +59,9 @@ export async function sendRequest(
 }
 
 function handleResponse(response: string) {
-  return marked.parse(response, { breaks: true });
+  marked.use({
+    breaks: true,
+    gfm: true,
+  });
+  return marked.parse(response);
 }

@@ -195,21 +195,24 @@ export default class Writer extends LitElement {
           const selection = contentWindow.getSelection();
 
           if (selection && selection.rangeCount > 0) {
-            const container = document.createElement("div");
+            const range = selection.getRangeAt(0);
 
-            for (let j = 0; j < selection.rangeCount; j++) {
-              container.appendChild(selection.getRangeAt(j).cloneContents());
+            let commonAncestor = range.commonAncestorContainer;
+
+            while (commonAncestor && commonAncestor.nodeName !== "DIV") {
+              commonAncestor = commonAncestor.parentElement!;
             }
 
-            if (container.innerHTML == "" && selection.toString() != "") {
-              fullSelection += selection.toString();
+            if (commonAncestor && commonAncestor.nodeName === "DIV") {
+              fullSelection += (commonAncestor as Element).innerHTML;
             } else {
-              fullSelection += container.innerHTML;
+              fullSelection += selection.toString();
             }
           }
         }
       }
     }
+
     return fullSelection;
   }
 
@@ -218,21 +221,28 @@ export default class Writer extends LitElement {
    */
   private overwriteTextSelection() {
     const iframes = document.querySelectorAll("iframe");
+
     if (iframes.length > 0) {
-      for (var i = 0; i < iframes.length; i++) {
+      for (let i = 0; i < iframes.length; i++) {
         const contentWindow = iframes[i].contentWindow;
-        const selected = contentWindow!.getSelection()!;
-        if (selected.rangeCount) {
-          var range = selected.getRangeAt(0);
-          range.deleteContents();
-          var div = document.createElement("div");
-          div.innerHTML = this.generatedTextArea!.value;
-          var frag = document.createDocumentFragment(),
-            child;
-          while ((child = div.firstChild) !== null) {
-            frag.appendChild(child);
+        const selection = contentWindow?.getSelection();
+
+        if (selection && selection.rangeCount > 0) {
+          const range = selection.getRangeAt(0);
+
+          let commonAncestor = range.commonAncestorContainer;
+
+          while (commonAncestor && commonAncestor.nodeName !== "DIV") {
+            commonAncestor = commonAncestor.parentElement!;
           }
-          range.insertNode(frag);
+
+          if (commonAncestor && commonAncestor.nodeName === "DIV") {
+            const parentDiv = commonAncestor as HTMLElement;
+
+            parentDiv.innerHTML = "";
+
+            parentDiv.innerHTML = this.generatedTextArea!.value;
+          }
         }
       }
     }
