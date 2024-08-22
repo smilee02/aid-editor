@@ -203,10 +203,12 @@ export default class Writer extends LitElement {
               commonAncestor = commonAncestor.parentElement!;
             }
 
-            if (commonAncestor && commonAncestor.nodeName === "DIV") {
+            if (
+              commonAncestor &&
+              commonAncestor.nodeName === "DIV" &&
+              (commonAncestor as HTMLDivElement).isContentEditable
+            ) {
               fullSelection += (commonAncestor as Element).innerHTML;
-            } else {
-              fullSelection += selection.toString();
             }
           }
         }
@@ -236,7 +238,11 @@ export default class Writer extends LitElement {
             commonAncestor = commonAncestor.parentElement!;
           }
 
-          if (commonAncestor && commonAncestor.nodeName === "DIV") {
+          if (
+            commonAncestor &&
+            commonAncestor.nodeName === "DIV" &&
+            (commonAncestor as HTMLDivElement).isContentEditable
+          ) {
             const parentDiv = commonAncestor as HTMLElement;
 
             parentDiv.innerHTML = "";
@@ -354,7 +360,11 @@ export default class Writer extends LitElement {
    * @returns {TemplateResult}
    */
   private buttonOverlay() {
-    return html`<button class="assistant-button" @click=${this.toggleOverlay}>
+    return html`<button
+      class="assistant-button"
+      part="assistant-button"
+      @click=${this.toggleOverlay}
+    >
       ${this.i18nextService.t("writer.buttons.assistant")}
     </button>`;
   }
@@ -365,7 +375,7 @@ export default class Writer extends LitElement {
    */
   private overlay() {
     return this.overlayVisible
-      ? html`<div class="overlay">${this.editor()}</div>`
+      ? html`<div class="overlay" part="overlay">${this.editor()}</div>`
       : null;
   }
 
@@ -376,6 +386,7 @@ export default class Writer extends LitElement {
   private toolbar() {
     return html`
       <toolbar-component
+        exportparts="toolbar, select-wrapper, toolbar-buttons, button-container, tooltip, close-button"
         .writingStyle=${this.writingStyle}
         .onWritingStyleChange=${this.handleWritingStyleChange.bind(this)}
         .onToggleThemeOverlay=${this.toggleThemeOverlay.bind(this)}
@@ -393,16 +404,21 @@ export default class Writer extends LitElement {
   private themeOverlay() {
     return this.themeOverlayVisible
       ? html`
-          <div class="backdrop-overlay" @click="${this.toggleThemeOverlay}">
-            <div class="theme-overlay" @click="${(e: Event) =>
-              e.stopPropagation()}">
-              <h1 class="theme-title">${this.i18nextService.t(
+          <div class="backdrop-overlay" part="backdrop-overlay" @click="${
+            this.toggleThemeOverlay
+          }">
+            <div class="theme-overlay" part="theme-overlay" @click="${(
+              e: Event
+            ) => e.stopPropagation()}">
+              <h1 class="theme-title" part="theme-title">${this.i18nextService.t(
                 "writer.overlays.themeTitle"
               )}</h1>
-              <input id="article-theme" placeholder=${this.i18nextService.t(
+              <input id="article-theme" part="article-theme" placeholder=${this.i18nextService.t(
                 "writer.overlays.themePlaceholder"
               )}></input>
-              <button class="theme-button" @click="${this.generateArticle}">
+              <button class="theme-button" part="theme-button" @click="${
+                this.generateArticle
+              }">
                 ${this.i18nextService.t("writer.buttons.generate")}
               </button>
             </div>
@@ -421,6 +437,7 @@ export default class Writer extends LitElement {
       <textarea
         id="text-area-generated"
         class="generated-text"
+        part="generated-text"
         placeholder=${this.i18nextService.t(
           "writer.overlays.generatedTextPlaceholder"
         )}
@@ -436,8 +453,8 @@ export default class Writer extends LitElement {
   private spinner() {
     return this.isLoading
       ? html`
-          <div class="spinner-overlay visible">
-            <div class="spinner"></div>
+          <div class="spinner-overlay visible" part="spinner-overlay">
+            <div class="spinner" part="spinner"></div>
           </div>
         `
       : null;
@@ -447,6 +464,7 @@ export default class Writer extends LitElement {
     return html` ${this.buttonOverlay()} ${this.overlay()} ${this.spinner()}
       <!--Alert Modal-->
       <modal-component
+        exportparts="modal, modal-overlay, modal-buttons, modal-confirm-button, modal-cancel-button"
         .open=${this.showAlertModal}
         .type=${"alert"}
         .message=${this.modalMessage}
@@ -456,6 +474,7 @@ export default class Writer extends LitElement {
       ></modal-component>
       <!--Confirm Modal-->
       <modal-component
+        exportparts="modal, modal-overlay, modal-buttons, modal-confirm-button, modal-cancel-button"
         .open=${this.showConfirmModal}
         .type=${"confirm"}
         .message=${this.modalMessage}

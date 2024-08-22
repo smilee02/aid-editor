@@ -19,8 +19,8 @@ import { GlobalStyles } from "../../styles/global-style.js";
  * @csspart modal-overlay - The overlay behind the modal.
  * @csspart modal - The container for the modal content.
  * @csspart modal-buttons - The container for the modal buttons.
- * @csspart confirm - The "Ok" button in the modal.
- * @csspart close - The "Cancel" button in the modal.
+ * @csspart modal-confirm-button - The "Ok" button in the modal.
+ * @csspart modal-cancel-button - The "Cancel" button in the modal.
  *
  * @cssproperty --modal-background-color - The background color of the modal.
  * @cssproperty --modal-overlay-color - The color of the overlay behind the modal.
@@ -93,20 +93,36 @@ export class ModalComponent extends LitElement {
     if (!this.open) return null;
 
     return html`
-      <div class="modal-overlay" @click=${this.close}></div>
-      <div class="modal">
+      <div
+        class="modal-overlay"
+        part="modal-overlay"
+        @click=${this.close}
+      ></div>
+      <div class="modal" part="modal">
         <p>${this.message}</p>
-        <div class="modal-buttons">
+        <div class="modal-buttons" part="modal-buttons">
           ${this.type === "confirm"
             ? html`
-                <button class="confirm" @click=${this.handleConfirm}>
+                <button
+                  class="modal-confirm-button"
+                  part="modal-confirm-button"
+                  @click=${this.handleConfirm}
+                >
                   ${this.i18nextService.t("modal.buttons.ok")}
                 </button>
-                <button class="close" @click=${this.handleCancel}>
+                <button
+                  class="modal-cancel-button"
+                  part="modal-cancel-button"
+                  @click=${this.handleCancel}
+                >
                   ${this.i18nextService.t("modal.buttons.cancel")}
                 </button>
               `
-            : html`<button class="confirm" @click=${this.close}>
+            : html`<button
+                class="modal-confirm-button"
+                part="modal-confirm-button"
+                @click=${this.close}
+              >
                 ${this.i18nextService.t("modal.buttons.ok")}
               </button>`}
         </div>

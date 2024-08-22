@@ -81,11 +81,11 @@ export const GlobalStyles = css`
     --modal-z-index: 51;
     --modal-z-index-overlay: 50;
 
-    --confirm-background: #e5252c;
-    --confirm-hover-background: #db1d12;
+    --modal-confirm-button-background: #e5252c;
+    --modal-confirm-button-hover-background: #db1d12;
 
-    --close-background: #3b3b3b;
-    --close-hover-background: #4a4a4a;
+    --modal-cancel-button-background: #3b3b3b;
+    --modal-cancel-button-hover-background: #4a4a4a;
 
     --gap-between-buttons: 0.75em;
 

@@ -62,22 +62,22 @@ export const ModalComponentStyle = css`
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   }
 
-  .modal-buttons .confirm {
-    background-color: var(--confirm-background);
+  .modal-buttons .modal-confirm-button {
+    background-color: var(--modal-confirm-button-background);
     color: white;
   }
 
-  .modal-buttons .confirm:hover {
-    background-color: var(--confirm-hover-background);
+  .modal-buttons .modal-confirm-button:hover {
+    background-color: var(--modal-confirm-button-hover-background);
   }
 
-  .modal-buttons .close {
-    background-color: var(--close-background);
+  .modal-buttons .modal-cancel-button {
+    background-color: var(--modal-cancel-button-background);
     color: white;
   }
 
-  .modal-buttons .close:hover {
-    background-color: var(--close-hover-background);
+  .modal-buttons .modal-cancel-button:hover {
+    background-color: var(--modal-cancel-button-hover-background);
   }
 
   .modal-buttons button:focus {

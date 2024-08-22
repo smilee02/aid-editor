@@ -89,8 +89,12 @@ export class ToolbarComponent extends LitElement {
 
   render() {
     return html`
-      <div class="toolbar">
-        <div class="select-wrapper" style="position: relative;">
+      <div class="toolbar" part="toolbar">
+        <div
+          class="select-wrapper"
+          part="select-wrapper"
+          style="position: relative;"
+        >
           <select
             id="writing-style-select"
             aria-label="Writing Style"
@@ -109,38 +113,51 @@ export class ToolbarComponent extends LitElement {
               ${this.i18nextService.t("toolbar.writingStyles.scientific")}
             </option>
           </select>
-          <span class="tooltip"
+          <span class="tooltip" part="tooltip"
             >${this.i18nextService.t("toolbar.tooltips.writingStyle")}</span
           >
         </div>
-        <div class="toolbar-buttons">
-          <div class="button-container" style="position: relative;">
+        <div class="toolbar-buttons" part="toolbar-buttons">
+          <div
+            class="button-container"
+            part="button-container"
+            style="position: relative;"
+          >
             <button class="article-writer" @click=${this.onToggleThemeOverlay}>
               📝
             </button>
-            <span class="tooltip"
+            <span class="tooltip" part="tooltip"
               >${this.i18nextService.t("toolbar.tooltips.createArticle")}</span
             >
           </div>
-          <div class="button-container" style="position: relative;">
+          <div
+            class="button-container"
+            part="button-container"
+            style="position: relative;"
+          >
             <button class="expand-content" @click=${this.onExpandContent}>
               ➕
             </button>
-            <span class="tooltip"
+            <span class="tooltip" part="tooltip"
               >${this.i18nextService.t("toolbar.tooltips.expandContent")}</span
             >
           </div>
-          <div class="button-container" style="position: relative;">
+          <div
+            class="button-container"
+            part="button-container"
+            style="position: relative;"
+          >
             <button class="shorten-content" @click=${this.onShortenContent}>
               ➖
             </button>
-            <span class="tooltip"
+            <span class="tooltip" part="tooltip"
               >${this.i18nextService.t("toolbar.tooltips.shortenContent")}</span
             >
           </div>
         </div>
         <button
           class="close-button"
+          part="close-button"
           @click=${() => this.dispatchEvent(new CustomEvent("close"))}
         >
           X
