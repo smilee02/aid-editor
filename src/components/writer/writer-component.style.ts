@@ -51,7 +51,9 @@ export const WriterComponentStyle = css`
     position: relative;
     display: flex;
     flex-direction: column;
-    padding: var(--modal-padding);
+    padding-left: var(--modal-padding);
+    padding-right: var(--modal-padding);
+    padding-bottom: var(--modal-padding);
     box-sizing: border-box;
   }
 

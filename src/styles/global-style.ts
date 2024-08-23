@@ -6,10 +6,8 @@ export const GlobalStyles = css`
     --spinner-z-index: 40;
     --spinner-color: #e5252c;
 
-    --modal-background-color: #ffffff;
     --modal-border-radius: 8px;
     --modal-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    --modal-padding: 20px;
     --modal-color: #333;
 
     --editor-width: clamp(370px, 60%, 100%);
@@ -50,15 +48,8 @@ export const GlobalStyles = css`
     --toolbar-border-bottom: 1px solid #e0e0e0;
     --toolbar-margin-bottom: 20px;
 
-    --select-border-radius: 4px;
-    --select-padding: 8px 16px;
-    --select-border-color: #e0e0e0;
-    --select-background-color: #f0f0f0;
-    --select-font-size: 14px;
-    --select-focus-border-color: #e5252c;
-
-    --tooltip-background-color: #333;
-    --tooltip-color: #fff;
+    --tooltip-background-color: #8b8b8b;
+    --tooltip-text-color: #fff;
     --tooltip-border-radius: 6px;
     --tooltip-padding: 5px;
     --tooltip-width: 120px;
@@ -69,33 +60,57 @@ export const GlobalStyles = css`
     --tooltip-transition: opacity 0.3s, visibility 0.3s, margin-top 0.3s;
     --tooltip-arrow-size: 5px;
     --tooltip-arrow-color: #333;
-    --tooltip-z-index: 30;
+    --tooltip-z-index: 10;
 
-    --modal-background: #ffffff;
+    --modal-background-color: #ffffff;
     --modal-overlay-background: rgba(0, 0, 0, 0.5);
     --modal-padding: 20px;
     --modal-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     --modal-min-width: 300px;
-    --modal-font-size: 16px;
+    --modal-font-size: 14px;
     --modal-text-color: #333;
     --modal-z-index: 51;
     --modal-z-index-overlay: 50;
 
-    --modal-confirm-button-background: #e5252c;
-    --modal-confirm-button-hover-background: #db1d12;
-
-    --modal-cancel-button-background: #3b3b3b;
-    --modal-cancel-button-hover-background: #4a4a4a;
+    --modal-confirm-button-background: #555555;
+    --modal-confirm-button-hover-background: #414141;
+    --modal-cancel-button-background: #454545;
+    --modal-cancel-button-hover-background: #424242;
 
     --gap-between-buttons: 0.75em;
 
-    --button-background-color: #e5252c;
-    --button-text-color: white;
-    --button-hover-background-color: #db1d12;
-    --button-border-radius: 6px;
-    --button-padding: 10px 20px;
-    --button-font-size: 14px;
+    --tab-border-radius: 4px;
+    --tab-padding: 8px 12px;
+    --tab-font-size: 14px;
+    --tab-background-color: #ffffff;
+    --tab-text-color: #333;
+    --tab-hover-background-color: #f7f7f7c6;
+    --tab-active-background-color: #e0e0e0;
+    --tab-active-text-color: #000;
+    --tab-hover-text-color: #454545;
 
     font-family: "Inter", sans-serif;
+    /* Dropdown Button */
+    --dropdown-button-border-radius: 4px;
+    --dropdown-button-padding: 7px 12px;
+    --dropdown-button-font-size: 14px;
+    --dropdown-button-text-color: #333;
+    --dropdown-button-border-color: #ddd;
+    --dropdown-button-hover-background-color: #efefef;
+    --dropdown-button-background-color: #fff;
+
+    /* Dropdown Menu */
+    --dropdown-menu-background-color: #fff;
+    --dropdown-menu-border-color: #ddd;
+    --dropdown-menu-border-radius: 4px;
+    --dropdown-menu-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --dropdown-menu-padding: 8px;
+    --dropdown-menu-font-size: 14px;
+    --dropdown-menu-button-padding: 4px;
+    --dropdown-menu-text-color: #333;
+    --dropdown-menu-hover-background-color: #f1f1f1c5;
+    --dropdown-menu-selected-background-color: #dedede;
+    --dropdown-menu-selected-text-color: #000;
+    --dropdown-menu-z-index: 20;
   }
 `;

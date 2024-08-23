@@ -20,7 +20,7 @@ export const ModalComponentStyle = css`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: var(--modal-background);
+    background: var(--modal-background-color);
     border-radius: var(--modal-border-radius);
     padding: var(--modal-padding);
     box-shadow: var(--modal-shadow);

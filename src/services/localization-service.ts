@@ -26,15 +26,22 @@ class LocalizationService {
       resources: phrases,
       fallbackLng: this.fallbackLocale,
       lng: locale ? locale : this.defaultLocale,
+      load: "currentOnly",
       interpolation: {
         escapeValue: false,
       },
+      saveMissing: true,
     });
+
     this.locale = locale ? locale : this.defaultLocale;
   }
 
   public getLocale(): string {
     return i18next.language;
+  }
+
+  public getLocales(): readonly string[] {
+    return Object.keys(i18next.services.resourceStore.data);
   }
 
   public setLocale(locale: string): void {

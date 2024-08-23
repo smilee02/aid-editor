@@ -20,9 +20,18 @@ const ptPT: Phrases = {
     },
     tooltips: {
       writingStyle: "Estilo de escrita",
-      createArticle: "Criar um novo artigo",
+      createArticle: "Escrever um novo artigo",
       expandContent: "Expandir o conteúdo selecionado",
       shortenContent: "Resumir o conteúdo selecionado",
+    },
+    tabs: {
+      createArticle: "Escrever",
+      shortenContent: "Resumir",
+      expandContent: "Expandir",
+    },
+    languages: {
+      "en-US": "Inglês (US)",
+      "pt-PT": "Português",
     },
   },
   modal: {

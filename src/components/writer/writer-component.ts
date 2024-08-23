@@ -152,8 +152,14 @@ export default class Writer extends LitElement {
    * Handles changes to the writing style.
    * @param {Event} e - The event triggered when the writing style is changed.
    */
-  private handleWritingStyleChange(e: Event) {
-    this.writingStyle = (e.target as HTMLSelectElement).value;
+  private handleWritingStyleChangeEvent(e: CustomEvent) {
+    this.writingStyle = e.detail.style;
+  }
+
+  private handleLocaleChange(e: CustomEvent) {
+    this.locale = e.detail.language;
+    this.i18nextService.setLocale(this.locale);
+    this.performUpdate();
   }
 
   /**
@@ -386,12 +392,13 @@ export default class Writer extends LitElement {
   private toolbar() {
     return html`
       <toolbar-component
-        exportparts="toolbar, select-wrapper, toolbar-buttons, button-container, tooltip, close-button"
+        exportparts="languages-toolbar, dropdown-container, dropdown-button, dropdown-arrow, dropdown-menu, dropdown-item, checkmark, dropdown-container-language, dropdown-button-language, dropdown-arrow-language, dropdown-menu-language, dropdown-item-language, checkmark-language, tabs-toolbar, toolbar-tabs, tab-container, tab-button, tooltip, close-button"
         .writingStyle=${this.writingStyle}
-        .onWritingStyleChange=${this.handleWritingStyleChange.bind(this)}
+        .onWritingStyleChange=${this.handleWritingStyleChangeEvent.bind(this)}
         .onToggleThemeOverlay=${this.toggleThemeOverlay.bind(this)}
         .onExpandContent=${this.expandContent.bind(this)}
         .onShortenContent=${this.shortenContent.bind(this)}
+        @locale-change=${this.handleLocaleChange}
         @close=${this.closeOverlays}
       ></toolbar-component>
     `;

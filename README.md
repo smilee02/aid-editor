@@ -189,7 +189,7 @@ Lit, HTML, CSS
 
 ## TODO
 
-- Web Component receive default browser language
-- Spinner when request is done
-- Markdown to HTML converter for text
-- Integratio with Unlayer
+- Documentation
+- Testing different Editors
+- Redo README
+- Redo Tests

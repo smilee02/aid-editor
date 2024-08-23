@@ -14,83 +14,80 @@ export const ToolbarComponentStyle = css`
 
   .close-button:hover {
     color: var(--close-button-hover-color);
-    outline: none;
-    border: none;
   }
 
-  /* Toolbar */
   .toolbar {
     display: flex;
     align-items: center;
     padding-bottom: var(--toolbar-padding-bottom);
+    padding-top: var(--modal-padding);
     border-bottom: var(--toolbar-border-bottom);
     margin-bottom: var(--toolbar-margin-bottom);
     background-color: var(--toolbar-background-color);
     border-radius: var(--toolbar-border-radius);
     box-shadow: var(--toolbar-shadow);
-  }
-
-  .toolbar .toolbar-buttons {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+    position: relative;
   }
 
   .toolbar .close-button {
     margin-left: auto;
   }
 
-  .toolbar .toolbar-buttons button {
-    border: 1px solid transparent;
-    border-radius: var(--button-border-radius);
-    padding: var(--button-padding);
-    cursor: pointer;
-    font-size: var(--button-font-size);
-    margin: 0;
-    background-color: var(--button-background-color);
-    color: var(--button-text-color);
-    transition: background-color 0.3s ease, transform 0.2s ease,
-      box-shadow 0.2s ease;
-    font-weight: 600;
+  /* Tabs */
+  .toolbar-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
   }
 
-  .toolbar .toolbar-buttons button:focus {
+  .tab-container {
+    position: relative;
+  }
+
+  .tab {
+    border: 1px solid transparent;
+    border-radius: var(--tab-border-radius);
+    padding: var(--tab-padding);
+    cursor: pointer;
+    font-size: var(--tab-font-size);
+    margin: 0;
+    background-color: var(--tab-background-color);
+    color: var(--tab-text-color);
+    transition: color 0.3s ease;
+    font-weight: 400;
+    position: relative;
+  }
+
+  .tab:hover {
+    color: var(--tab-hover-text-color);
+    border-bottom: 1px var(--tab-hover-text-color);
+    background-color: var(--tab-hover-background-color);
+  }
+
+  .tab:focus {
     outline: none;
     box-shadow: 0 0 0 2px var(--primary-color-light),
       0 0 5px var(--primary-color);
   }
 
-  .toolbar .toolbar-buttons button:hover {
-    background-color: var(--button-hover-background-color);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  .tab[active] {
+    background-color: var(--tab-active-background-color);
+    color: var(--tab-active-text-color);
   }
 
-  .toolbar select {
-    border-radius: var(--select-border-radius);
-    padding: var(--select-padding);
-    border: 1px solid var(--select-border-color);
-    background-color: var(--select-background-color);
-    font-size: var(--select-font-size);
-    outline: none;
-    margin-right: 4px;
-    cursor: pointer;
-    transition: border-color 0.3s ease, box-shadow 0.2s ease;
-  }
-
-  .toolbar select:focus {
-    border-color: var(--select-focus-border-color);
-    box-shadow: 0 0 0 2px var(--select-focus-border-color-light);
-  }
-
-  .toolbar .select-wrapper {
-    position: relative;
+  .tab-container:hover .tooltip,
+  .tab-container:focus-within .tooltip {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0.3s;
   }
 
   /* Tooltip */
   .tooltip {
     visibility: hidden;
     background-color: var(--tooltip-background-color);
-    color: var(--tooltip-color);
+    color: var(--tooltip-text-color);
     text-align: center;
     border-radius: var(--tooltip-border-radius);
     padding: var(--tooltip-padding);
@@ -102,22 +99,139 @@ export const ToolbarComponentStyle = css`
     margin-top: var(--tooltip-margin-top);
     width: var(--tooltip-width);
     font-size: var(--tooltip-font-size);
-    opacity: var(--tooltip-opacity);
-    transition: var(--tooltip-transition);
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 
-  .button-container:hover .tooltip,
-  .select-wrapper:hover .tooltip {
-    visibility: visible;
-    opacity: var(--tooltip-visible-opacity);
-    transition-delay: 0.3s;
+  .languages-toolbar {
+    display: flex;
+    gap: 2px;
+    position: relative;
   }
 
-  .button-container:focus-within .tooltip,
-  .select-wrapper:focus-within .tooltip {
-    visibility: hidden;
-    opacity: var(--tooltip-visible-opacity);
-    transition-delay: 0s;
+  .dropdown-container {
+    position: relative;
+  }
+
+  /* Dropdown */
+  .dropdown-button {
+    border-radius: var(--dropdown-button-border-radius)
+      var(--dropdown-button-border-radius) 0 0;
+    padding: var(--dropdown-button-padding);
+    background-color: var(--dropdown-button-background-color);
+    color: var(--dropdown-button-text-color);
+    margin-left: 20px;
+    cursor: pointer;
+    font-size: var(--dropdown-button-font-size);
+    outline: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .dropdown-button:hover {
+    background-color: var(--dropdown-button-hover-background-color);
+  }
+
+  .dropdown-button-language {
+    border-radius: var(--dropdown-button-border-radius)
+      var(--dropdown-button-border-radius) 0 0;
+    padding: var(--dropdown-button-padding);
+    background-color: var(--dropdown-button-background-color);
+    color: var(--dropdown-button-text-color);
+    cursor: pointer;
+    font-size: var(--dropdown-button-font-size);
+    outline: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .dropdown-button-language:hover {
+    background-color: var(--dropdown-button-hover-background-color);
+  }
+
+  .arrow {
+    display: inline-block;
+    margin-left: 8px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    transition: transform 0.3s ease;
+  }
+
+  .arrow.down {
+    border-top: 6px solid var(--dropdown-button-text-color);
+  }
+
+  .arrow.up {
+    border-bottom: 6px solid var(--dropdown-button-text-color);
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--dropdown-menu-background-color);
+    border: 1px solid var(--dropdown-menu-border-color);
+    border-radius: var(--dropdown-menu-border-radius);
+    box-shadow: var(--dropdown-menu-shadow);
+    padding: var(--dropdown-menu-padding);
+    z-index: var(--dropdown-menu-z-index);
+    min-width: 100%;
+    margin-top: 4px;
+  }
+
+  .dropdown-menu li {
+    list-style: none;
+  }
+
+  .dropdown-menu button {
+    background: none;
+    border: none;
+    padding: var(--dropdown-menu-button-padding);
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    font-size: var(--dropdown-menu-font-size);
+    color: var(--dropdown-menu-text-color);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .dropdown-menu button:hover {
+    background-color: var(--dropdown-menu-hover-background-color);
+  }
+
+  .dropdown-menu button.selected {
+    background-color: var(--dropdown-menu-selected-background-color);
+    color: var(--dropdown-menu-selected-text-color);
+  }
+
+  .dropdown-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    z-index: 10;
+  }
+
+  .checkmark {
+    color: var(--checkmark-color);
+  }
+
+  .languages-toolbar {
+    background-color: transparent;
+    box-shadow: none;
+    position: absolute;
+    top: -30px;
+    left: 0;
+    right: 0;
+    z-index: 2;
   }
 `;

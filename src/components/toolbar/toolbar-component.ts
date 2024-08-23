@@ -1,158 +1,243 @@
 import { html, LitElement } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { ToolbarComponentStyle } from "./toolbar-component.style.js";
 import LocalizationService from "../../services/localization-service.js";
 import { GlobalStyles } from "../../styles/global-style.js";
 
-/**
- * @summary ToolbarComponent provides a set of controls to interact with the AID - AI-Driven Editor.
- * @description This toolbar includes options for selecting writing styles, creating a new article, and expanding or shortening content. It’s designed to be used within the AID Editor environment.
- *
- * @customElement toolbar-component
- * @status stable
- * @since 1.0
- *
- * @property {string} writingStyle - The current writing style selected in the toolbar. Can be "formal", "casual", or "scientific".
- *
- * @csspart toolbar - The container for the toolbar elements.
- * @csspart select-wrapper - The wrapper around the writing style selector.
- * @csspart toolbar-buttons - The container for the toolbar buttons.
- * @csspart button-container - The container for individual buttons in the toolbar.
- * @csspart tooltip - The tooltip displayed when hovering over buttons.
- * @csspart close-button - The close button in the toolbar for the editor.
- *
- * @cssproperty --button-color - The color of the buttons in the toolbar.
- * @cssproperty --tooltip-background-color - The background color of the tooltips.
- * @cssproperty --tooltip-text-color - The text color of the tooltips.
- *
- */
-
 @customElement("toolbar-component")
 export class ToolbarComponent extends LitElement {
-  /**
-   * The current writing style selected.
-   * @type {string}
-   */
   @property({ type: String })
   writingStyle: string = "formal";
 
-  /**
-   * Callback function when the writing style is changed.
-   * @type {function}
-   */
-  @property({ attribute: false })
-  onWritingStyleChange: (e: Event) => void = () => {};
+  @property({ type: String })
+  language: string = "";
 
-  /**
-   * Callback function to toggle the theme input overlay.
-   * @type {function}
-   */
+  @property({ attribute: false })
+  onWritingStyleChange: (e: CustomEvent) => void = () => {};
+
+  @property({ attribute: false })
+  onLocaleChange: (e: CustomEvent) => void = () => {};
+
   @property({ attribute: false })
   onToggleThemeOverlay: () => void = () => {};
 
-  /**
-   * Callback function to expand the content.
-   * @type {function}
-   */
   @property({ attribute: false })
   onExpandContent: () => void = () => {};
 
-  /**
-   * Callback function to shorten the content.
-   * @type {function}
-   */
   @property({ attribute: false })
   onShortenContent: () => void = () => {};
 
+  @state()
+  private isDropdownOpen: boolean = false;
+
+  @state()
+  private isDropdownLanguageOpen: boolean = false;
+
   static styles = [GlobalStyles, ToolbarComponentStyle];
 
-  /**
-   * Service for localization.
-   * @type {LocalizationService}
-   */
   i18nextService: LocalizationService;
+
+  languages: readonly string[];
 
   constructor() {
     super();
     this.i18nextService = LocalizationService.getInstance();
+    this.language = this.i18nextService.getLocale();
+    this.languages = this.i18nextService.getLocales();
   }
 
-  /**
-   * Handles changes to the writing style.
-   * @param {Event} e - The event triggered when the writing style is changed.
-   */
-  private handleWritingStyleChange(e: Event) {
+  private handleWritingStyleChange(newStyle: string) {
+    this.writingStyle = newStyle;
+    this.isDropdownOpen = false;
     if (this.onWritingStyleChange) {
-      this.onWritingStyleChange(e);
+      this.onWritingStyleChange(
+        new CustomEvent("change", { detail: { style: newStyle } })
+      );
     }
+  }
+
+  private handleLocaleChange(language: string) {
+    this.i18nextService.setLocale(language);
+    this.language = language;
+    this.isDropdownLanguageOpen = false;
+
+    this.performUpdate();
+
+    this.dispatchEvent(
+      new CustomEvent("locale-change", {
+        detail: { language },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
+  private toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  private toggleDropdownLanguage() {
+    this.isDropdownLanguageOpen = !this.isDropdownLanguageOpen;
   }
 
   render() {
     return html`
-      <div class="toolbar" part="toolbar">
-        <div
-          class="select-wrapper"
-          part="select-wrapper"
-          style="position: relative;"
-        >
-          <select
-            id="writing-style-select"
-            aria-label="Writing Style"
-            @change="${this.handleWritingStyleChange}"
+      <div class="languages-toolbar" part="languages-toolbar">
+        <!-- Writing Style Dropdown -->
+        <div class="dropdown-container" part="dropdown-container">
+          <button
+            @click="${this.toggleDropdown}"
+            class="dropdown-button"
+            part="dropdown-button"
           >
-            <option value="formal" ?selected=${this.writingStyle === "formal"}>
-              ${this.i18nextService.t("toolbar.writingStyles.formal")}
-            </option>
-            <option value="casual" ?selected=${this.writingStyle === "casual"}>
-              ${this.i18nextService.t("toolbar.writingStyles.casual")}
-            </option>
-            <option
-              value="scientific"
-              ?selected=${this.writingStyle === "scientific"}
-            >
-              ${this.i18nextService.t("toolbar.writingStyles.scientific")}
-            </option>
-          </select>
-          <span class="tooltip" part="tooltip"
-            >${this.i18nextService.t("toolbar.tooltips.writingStyle")}</span
-          >
+            ${this.i18nextService.t(
+              `toolbar.writingStyles.${this.writingStyle}`
+            )}
+            <span
+              class="arrow ${this.isDropdownOpen ? "up" : "down"}"
+              part="dropdown-arrow"
+            ></span>
+          </button>
+          ${this.isDropdownOpen
+            ? html`
+                <ul class="dropdown-menu" part="dropdown-menu">
+                  ${["formal", "casual", "scientific"].map(
+                    (style) => html`
+                      <li>
+                        <button
+                          @click="${() => this.handleWritingStyleChange(style)}"
+                          class="${this.writingStyle === style
+                            ? "selected"
+                            : ""}"
+                          part="dropdown-item"
+                        >
+                          ${this.i18nextService.t(
+                            `toolbar.writingStyles.${style}`
+                          )}
+                          ${this.writingStyle === style
+                            ? html`<span class="checkmark" part="checkmark">
+                                <svg
+                                  width="12"
+                                  height="12"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="m9 16.2-3.5-3.5a.9839.9839 0 0 0-1.4 0c-.39.39-.39 1.01 0 1.4l4.19 4.19c.39.39 1.02.39 1.41 0L20.3 7.7c.39-.39.39-1.01 0-1.4a.9839.9839 0 0 0-1.4 0L9 16.2z"
+                                    fill="#0a0"
+                                  />
+                                </svg>
+                              </span>`
+                            : ""}
+                        </button>
+                      </li>
+                    `
+                  )}
+                </ul>
+              `
+            : ""}
         </div>
-        <div class="toolbar-buttons" part="toolbar-buttons">
-          <div
-            class="button-container"
-            part="button-container"
-            style="position: relative;"
+
+        <!-- Language Dropdown -->
+        <div class="dropdown-container" part="dropdown-container-language">
+          <button
+            @click="${this.toggleDropdownLanguage}"
+            class="dropdown-button-language"
+            part="dropdown-button-language"
           >
-            <button class="article-writer" @click=${this.onToggleThemeOverlay}>
-              📝
-            </button>
-            <span class="tooltip" part="tooltip"
-              >${this.i18nextService.t("toolbar.tooltips.createArticle")}</span
+            ${this.i18nextService.t(`toolbar.languages.${this.language}`)}
+            <span
+              class="arrow ${this.isDropdownLanguageOpen ? "up" : "down"}"
+              part="dropdown-arrow-language"
+            ></span>
+          </button>
+          ${this.isDropdownLanguageOpen
+            ? html`
+                <ul class="dropdown-menu" part="dropdown-menu-language">
+                  ${this.languages.map(
+                    (language) => html`
+                      <li>
+                        <button
+                          @click="${() => this.handleLocaleChange(language)}"
+                          class="${this.language === language
+                            ? "selected"
+                            : ""}"
+                          part="dropdown-item-language"
+                        >
+                          ${this.i18nextService.t(
+                            `toolbar.languages.${language}`
+                          )}
+                          ${this.language === language
+                            ? html`<span
+                                class="checkmark"
+                                part="checkmark-language"
+                              >
+                                <svg
+                                  width="12"
+                                  height="12"
+                                  viewBox="0 0 24 24"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="m9 16.2-3.5-3.5a.9839.9839 0 0 0-1.4 0c-.39.39-.39 1.01 0 1.4l4.19 4.19c.39.39 1.02.39 1.41 0L20.3 7.7c.39-.39.39-1.01 0-1.4a.9839.9839 0 0 0-1.4 0L9 16.2z"
+                                    fill="#0a0"
+                                  />
+                                </svg>
+                              </span>`
+                            : ""}
+                        </button>
+                      </li>
+                    `
+                  )}
+                </ul>
+              `
+            : ""}
+        </div>
+      </div>
+
+      <!-- Functionalities Toolbar -->
+      <div class="toolbar" part="tabs-toolbar">
+        <div class="toolbar-tabs" part="toolbar-tabs">
+          <div class="tab-container" part="tab-container">
+            <button
+              class="tab"
+              @click=${this.onToggleThemeOverlay}
+              ?active=${false}
+              part="tab-button"
             >
+              ${this.i18nextService.t("toolbar.tabs.createArticle")}
+            </button>
+            <span class="tooltip" part="tooltip">
+              ${this.i18nextService.t("toolbar.tooltips.createArticle")}
+            </span>
           </div>
-          <div
-            class="button-container"
-            part="button-container"
-            style="position: relative;"
-          >
-            <button class="expand-content" @click=${this.onExpandContent}>
-              ➕
-            </button>
-            <span class="tooltip" part="tooltip"
-              >${this.i18nextService.t("toolbar.tooltips.expandContent")}</span
+          <div class="tab-container" part="tab-container">
+            <button
+              class="tab"
+              @click=${this.onExpandContent}
+              ?active=${false}
+              part="tab-button"
             >
+              ${this.i18nextService.t("toolbar.tabs.expandContent")}
+            </button>
+            <span class="tooltip" part="tooltip">
+              ${this.i18nextService.t("toolbar.tooltips.expandContent")}
+            </span>
           </div>
-          <div
-            class="button-container"
-            part="button-container"
-            style="position: relative;"
-          >
-            <button class="shorten-content" @click=${this.onShortenContent}>
-              ➖
-            </button>
-            <span class="tooltip" part="tooltip"
-              >${this.i18nextService.t("toolbar.tooltips.shortenContent")}</span
+          <div class="tab-container" part="tab-container">
+            <button
+              class="tab"
+              @click=${this.onShortenContent}
+              ?active=${false}
+              part="tab-button"
             >
+              ${this.i18nextService.t("toolbar.tabs.shortenContent")}
+            </button>
+            <span class="tooltip" part="tooltip">
+              ${this.i18nextService.t("toolbar.tooltips.shortenContent")}
+            </span>
           </div>
         </div>
         <button

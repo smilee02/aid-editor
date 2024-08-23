@@ -20,9 +20,18 @@ const enUS: Phrases = {
     },
     tooltips: {
       writingStyle: "Writing style",
-      createArticle: "Create a new article",
+      createArticle: "Write a new article",
       expandContent: "Expand the selected content",
       shortenContent: "Shorten the selected content",
+    },
+    tabs: {
+      createArticle: "Write",
+      shortenContent: "Shorten",
+      expandContent: "Expand",
+    },
+    languages: {
+      "en-US": "English (US)",
+      "pt-PT": "Portuguese",
     },
   },
   modal: {
