@@ -139,7 +139,7 @@ Add to your HTML file
 And to use the component
 
 ```
-<writer-assistant></writer-assistant>
+<aid-editor></aid-editor>
 ```
 
 HTML file
@@ -151,10 +151,10 @@ HTML file
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>A.I.D - AI-Driven Editor Demo</title>
-    <script type="module" src="./dist/writer-assistant.min.js"></script>
+    <script type="module" src="./dist/aid-editor.min.js"></script>
   </head>
   <body>
-    <writer-assistant></writer-assistant>
+    <aid-editor></aid-editor>
   </body>
 </html>
 ```
@@ -163,7 +163,7 @@ HTML file
 
 ### Note
 
-Or you can try the index.html existent
+You can try the existent index.html
 
 At the moment make sure you are running chrome using _--disable-web-security_
 

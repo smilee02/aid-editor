@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { customElement, property, query } from "lit/decorators.js";
+import { property, query } from "lit/decorators.js";
 import { WriterComponentStyle } from "./writer-component.style.js";
 import "../modal/modal-component.js";
 import "../toolbar/toolbar-component.js";
@@ -38,8 +38,7 @@ import { GlobalStyles } from "../../styles/global-style.js";
  * @cssproperty --theme-overlay-background-color - The background color of the theme overlay.
  *
  */
-@customElement("writer-assistant")
-export default class Writer extends LitElement {
+export default class WriterComponent extends LitElement {
   static styles = [GlobalStyles, WriterComponentStyle];
 
   /**

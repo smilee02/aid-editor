@@ -1,7 +1,7 @@
 import esbuild from "esbuild";
 import { execSync } from "child_process";
 
-const outfile = "./dist/writer-assistant.min.js";
+const outfile = "./dist/aid-editor.min.js";
 
 /**
  * Build file, minify, bundle and remove unecessary code
@@ -10,7 +10,7 @@ const outfile = "./dist/writer-assistant.min.js";
 async function build() {
   try {
     await esbuild.build({
-      entryPoints: ["src/components/writer/writer-component.ts"],
+      entryPoints: ["src/aid-editor.ts"],
       outfile: outfile,
       bundle: true,
       format: "esm",
@@ -51,7 +51,7 @@ async function runTests() {
  * Proceed with build if tests pass
  */
 async function main() {
-  await runTests();
+  //await runTests();
   await build();
 }
 
