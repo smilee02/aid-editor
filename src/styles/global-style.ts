@@ -4,7 +4,7 @@ export const GlobalStyles = css`
     --overlay-background-color: rgba(0, 0, 0, 0.5);
     --overlay-z-index: 10;
     --spinner-z-index: 40;
-    --spinner-color: #e5252c;
+    --spinner-color: #555555;
 
     --modal-border-radius: 8px;
     --modal-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -32,9 +32,9 @@ export const GlobalStyles = css`
     --input-button-font-size: 14px;
     --input-border: 1px solid #e0e0e0;
 
-    --button-background-color: #e5252c;
+    --button-background-color: #454545;
     --button-color: white;
-    --button-hover-background-color: #db1d12;
+    --button-hover-background-color: #424242;
     --button-border-radius: 4px;
     --button-padding: 8px 16px;
     --button-font-size: 14px;

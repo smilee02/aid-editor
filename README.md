@@ -12,7 +12,7 @@ AID is a web component developed in [Lit](https://lit.dev/) that helps make writ
 
 - **OpenAI API Key**: The AI features of A.I.D require an OpenAI API key for ChatGPT. Please make sure you have a valid API key to use the AI functionalities.
 
-## Setting the Environment Variable
+## Setting OpenAI Environment Variable
 
 To use the AID (AI-Driven Editor) web component, you'll need to set the `OPENAI_API_KEY` environment variable. This key is required for the AI-driven functionalities. Below are the instructions for setting this variable on Linux, Windows, and macOS.
 
@@ -162,7 +162,7 @@ HTML file
 
 <br>
 
-### Note
+**Note**
 
 You can try the existent index.html
 
