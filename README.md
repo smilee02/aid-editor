@@ -6,6 +6,7 @@ AID is a web component developed in [Lit](https://lit.dev/) that helps make writ
 
 - Real-time AI content generation and rewriting
 - Cross-platform compatibility
+- Write Articles, Expand Content, Shorten Content
 
 ## Requirements
 
@@ -109,13 +110,13 @@ To use the AID (AI-Driven Editor) web component, you'll need to set the `OPENAI_
 Clone the project
 
 ```bash
-git clone https://github.com/smilee02/writer-assistant.git
+git clone https://github.com/smilee02/aid-editor.git
 ```
 
 Go to the project directory
 
 ```bash
-cd writer-assistant
+cd aid-editor
 ```
 
 Install dependencies
@@ -133,7 +134,7 @@ npm run build
 Add to your HTML file
 
 ```
-<script type="module" src="./path-to-aid-component.js"></script>
+<script type="module" src="./dist/aid-editor.min.js"></script>
 ```
 
 And to use the component

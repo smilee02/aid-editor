@@ -28,6 +28,8 @@ import { GlobalStyles } from "../../styles/global-style.js";
  * @property {string} modalMessage - The message displayed in the alert or confirm modals.
  * @property {boolean} showAlertModal - Determines if the alert modal is visible.
  * @property {boolean} showConfirmModal - Determines if the confirm modal is visible.
+ * @property {string} locale - Locale that the components should use
+ * @property {boolean} isLoading - Controls the visibility of the spinner
  *
  * @csspart overlay - The container for the main assistant overlay.
  * @csspart editor - The container for the editor area.
@@ -85,19 +87,27 @@ export default class WriterComponent extends LitElement {
 
   /**
    * Locale of the component
+   * @type {string}
    */
   @property({ type: String })
   locale = "";
 
   /**
    * Loading spinner
+   * @type {boolean}
    */
   @property({ type: Boolean })
   isLoading: boolean = false;
 
+  /** Reference to the article theme input element.
+   * @type {HTMLInputElement | undefined} -
+   */
   @query("#article-theme")
   articleThemeInput: HTMLInputElement | undefined;
 
+  /** Reference to the generated text area element.
+   * @type {HTMLTextAreaElement | undefined} -
+   */
   @query("#text-area-generated")
   generatedTextArea: HTMLTextAreaElement | undefined;
 
@@ -155,6 +165,10 @@ export default class WriterComponent extends LitElement {
     this.writingStyle = e.detail.style;
   }
 
+  /**
+   * Handles changes to the locale.
+   * @param {Event} e - The event triggered when the locale is changed.
+   */
   private handleLocaleChange(e: CustomEvent) {
     this.locale = e.detail.language;
     this.i18nextService.setLocale(this.locale);

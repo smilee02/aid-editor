@@ -4,39 +4,120 @@ import { ToolbarComponentStyle } from "./toolbar-component.style.js";
 import LocalizationService from "../../services/localization-service.js";
 import { GlobalStyles } from "../../styles/global-style.js";
 
+/**
+ * @summary Toolbar component provides controls for selecting writing styles, languages, and content manipulation.
+ * @description The Toolbar component allows users to change writing styles and languages and perform actions such as creating, expanding, and shortening articles. It includes dropdowns for writing style and language selection and buttons for each action.
+ *
+ * @customElement toolbar-component
+ * @status stable
+ * @since 1.0
+ *
+ * @property {string} writingStyle - The currently selected writing style.
+ * @property {string} language - The currently selected language.
+ * @property {function} onWritingStyleChange - Callback function invoked when writing style changes.
+ * @property {function} onLocaleChange - Callback function invoked when language changes.
+ * @property {function} onToggleThemeOverlay - Callback function invoked when the theme overlay is toggled.
+ * @property {function} onExpandContent - Callback function invoked when the expand content action is triggered.
+ * @property {function} onShortenContent - Callback function invoked when the shorten content action is triggered.
+ *
+ * @csspart languages-toolbar - The container for the writing styles and languages toolbar.
+ * @csspart dropdown-container - The container for the writing styles dropdown.
+ * @csspart dropdown-container-language - The container for the languages dropdown.
+ * @csspart dropdown-button - The button for toggling the writing styles dropdown.
+ * @csspart dropdown-button-language - The button for toggling the languages dropdown.
+ * @csspart dropdown-arrow - The arrow indicating the dropdown state for writing styles.
+ * @csspart dropdown-arrow-language - The arrow indicating the dropdown state for languages.
+ * @csspart dropdown-menu - The menu for writing style selections.
+ * @csspart dropdown-menu-language - The menu for language selections.
+ * @csspart dropdown-item - The individual item in the writing style dropdown.
+ * @csspart dropdown-item-language - The individual item in the language dropdown.
+ * @csspart toolbar-tabs - The container for the toolbar action buttons.
+ * @csspart tab-container - The container for each toolbar tab.
+ * @csspart tab-button - The button for each toolbar action.
+ * @csspart tooltip - The tooltip for each toolbar action.
+ * @csspart close-button - The button to close the toolbar.
+ *
+ * @cssproperty --toolbar-background-color - The background color of the toolbar.
+ * @cssproperty --dropdown-background-color - The background color of the dropdown menus.
+ * @cssproperty --button-hover-color - The hover color for the buttons.
+ */
 @customElement("toolbar-component")
 export class ToolbarComponent extends LitElement {
+  /**
+   * The currently selected writing style.
+   *  @type {string}
+   */
   @property({ type: String })
   writingStyle: string = "formal";
 
+  /**
+   * The currently selected language.
+   * @type {string}
+   */
   @property({ type: String })
   language: string = "";
 
+  /**
+   * Callback function invoked when writing style changes.
+   * @type {(e: CustomEvent) => void}
+   */
   @property({ attribute: false })
   onWritingStyleChange: (e: CustomEvent) => void = () => {};
 
+  /**
+   * Callback function invoked when language changes.
+   * @type {(e: CustomEvent) => void}
+   */
   @property({ attribute: false })
   onLocaleChange: (e: CustomEvent) => void = () => {};
 
+  /**
+   * Callback function invoked when the theme overlay is toggled.
+   * @type {() => void}
+   */
   @property({ attribute: false })
   onToggleThemeOverlay: () => void = () => {};
 
+  /**
+   * Callback function invoked when the expand content action is triggered.
+   * @type {() => void}
+   */
   @property({ attribute: false })
   onExpandContent: () => void = () => {};
 
+  /**
+   * Callback function invoked when the shorten content action is triggered.
+   * @type {() => void}
+   */
   @property({ attribute: false })
   onShortenContent: () => void = () => {};
 
+  /**
+   * Indicates whether the writing style dropdown is open.
+   *  @type {boolean}
+   */
   @state()
   private isDropdownOpen: boolean = false;
 
+  /**
+   * Indicates whether the language dropdown is open.
+   * @type {boolean}
+   */
   @state()
   private isDropdownLanguageOpen: boolean = false;
 
   static styles = [GlobalStyles, ToolbarComponentStyle];
 
+  /**
+   * Instance of the localization service.
+   * @type {LocalizationService}
+   */
   i18nextService: LocalizationService;
 
+  /**
+   * List of available languages.
+   * @type {readonly string[]}
+   */
   languages: readonly string[];
 
   constructor() {
@@ -46,6 +127,10 @@ export class ToolbarComponent extends LitElement {
     this.languages = this.i18nextService.getLocales();
   }
 
+  /**
+   * Handles changes to the writing style.
+   * @param {string} newStyle - The new writing style selected by the user.
+   */
   private handleWritingStyleChange(newStyle: string) {
     this.writingStyle = newStyle;
     this.isDropdownOpen = false;
@@ -56,6 +141,10 @@ export class ToolbarComponent extends LitElement {
     }
   }
 
+  /**
+   * Handles changes to the language.
+   * @param {string} language - The new language selected by the user.
+   */
   private handleLocaleChange(language: string) {
     this.i18nextService.setLocale(language);
     this.language = language;
@@ -72,14 +161,24 @@ export class ToolbarComponent extends LitElement {
     );
   }
 
+  /**
+   * Toggles the visibility of the writing style dropdown.
+   */
   private toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
+  /**
+   * Toggles the visibility of the language dropdown.
+   */
   private toggleDropdownLanguage() {
     this.isDropdownLanguageOpen = !this.isDropdownLanguageOpen;
   }
 
+  /**
+   * Renders the toolbar layout including writing style dropdown, language dropdown, and action buttons.
+   * @returns {TemplateResult} The template result for the component's layout.
+   */
   render() {
     return html`
       <div class="languages-toolbar" part="languages-toolbar">
