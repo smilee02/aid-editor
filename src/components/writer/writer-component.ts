@@ -198,12 +198,35 @@ export default class WriterComponent extends LitElement {
     }
   }
 
+  private getAllIFrames() {
+    var iframes: HTMLIFrameElement[] = [];
+    function findIFrames(document: Document) {
+      const frames = document.querySelectorAll("iframe");
+      frames.forEach((frame) => {
+        iframes.push(frame);
+        try {
+          const innerDoc =
+            frame.contentDocument || frame.contentWindow?.document;
+          if (innerDoc) {
+            findIFrames(innerDoc);
+          }
+        } catch (e) {
+          console.warn("Can't access iframe");
+        }
+      });
+    }
+
+    findIFrames(document);
+
+    return iframes;
+  }
+
   /**
    * Returns the text that was selected in the document
    * @returns {string}
    */
   private getTextSelection(): string {
-    const iframes = document.querySelectorAll("iframe");
+    const iframes = this.getAllIFrames();
     let fullSelection = "";
 
     if (iframes.length > 0) {
@@ -212,6 +235,7 @@ export default class WriterComponent extends LitElement {
 
         if (contentWindow) {
           const selection = contentWindow.getSelection();
+          console.log(selection?.toString());
 
           if (selection && selection.rangeCount > 0) {
             const range = selection.getRangeAt(0);
@@ -241,7 +265,7 @@ export default class WriterComponent extends LitElement {
    * Overwrites the text that was selected
    */
   private overwriteTextSelection() {
-    const iframes = document.querySelectorAll("iframe");
+    const iframes = this.getAllIFrames();
 
     if (iframes.length > 0) {
       for (let i = 0; i < iframes.length; i++) {
