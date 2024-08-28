@@ -1,16 +1,123 @@
-# AID - AI-Driven Editor
+<a id="readme-top"></a>
 
-AID is a web component developed in [Lit](https://lit.dev/) that helps make writing and editing easier using artificial intelligence. With AID, you can quickly generate new content and improve existing text.
+<!-- *** Thanks for checking out the Best-README-Template. If you have a suggestion *** that would make this better, please fork the repo and create a pull request *** or simply open an issue with the tag "enhancement". *** Don't forget to give the project a star! *** Thanks again! Now go create something AMAZING! :D --> <!-- PROJECT SHIELDS --> <!-- *** I'm using markdown "reference style" links for readability. *** Reference links are enclosed in brackets [ ] instead of parentheses ( ). *** See the bottom of this document for the declaration of the reference variables *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use. *** https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
+[![Contributors][contributors-shield]][contributors-url] [![Forks][forks-shield]][forks-url] [![Stargazers][stars-shield]][stars-url] [![Issues][issues-shield]][issues-url] [![MIT License][license-shield]][license-url] [![LinkedIn][linkedin-shield]][linkedin-url]
+
+<!-- PROJECT LOGO --> <br />
+<div align="center"> 
+  <a href="https://github.com/smilee02/aid-editor"> <img src="images/logo.png" alt="Logo" width="80" height="80"> 
+  </a> 
+  <h3 align="center">AID - AI-Driven Editor</h3> 
+  <p align="center"> AID is a web component developed in Lit that helps make writing and editing easier using artificial intelligence. With AID, you can quickly generate new content and improve existing text.    
+    <br /> 
+    <a href="https://github.com/smilee02/aid-editor">
+      <strong>Explore the docs »</strong>
+    </a> 
+    <br /> 
+    <br /> 
+    <a href="https://github.com/smilee02/aid-editor">View Demo</a>
+    · 
+    <a href="https://github.com/smilee02/aid-editor/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    · 
+    <a href="https://github.com/smilee02/aid-editor/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  </p> 
+</div>
+
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#setting-openai-environment-variable">Setting OpenAI Environment Variable</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#running-tests">Running Tests</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+ <!-- ABOUT THE PROJECT -->
+
+## About The Project
+
+[![AID-Editor][product-screenshot]](images/Editor.png)
+
+AID is a web component developed in Lit that helps make writing and editing easier using artificial intelligence. With AID, you can quickly generate new content and improve existing text.
 
 ## Features
 
 - Real-time AI content generation and rewriting
 - Cross-platform compatibility
 - Write Articles, Expand Content, Shorten Content
+- Highly Customizable
 
-## Requirements
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-- **OpenAI API Key**: The AI features of A.I.D require an OpenAI API key for ChatGPT. Please make sure you have a valid API key to use the AI functionalities.
+## Built With
+
+- [![Lit][Lit.dev]][Lit-url]
+- ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- GETTING STARTED -->
+
+## Getting Started
+
+### Requirements
+
+- **OpenAI API Key**: The AI features of AID require an OpenAI API key for ChatGPT. Please make sure you have a valid API key to use the AI functionalities.
+
+### Installation
+
+Clone the repo
+
+```bash
+git clone https://github.com/smilee02/aid-editor.git
+```
+
+Go to the project directory
+
+```bash
+cd aid-editor
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Build the project
+
+```bash
+npm run build
+```
+
+Add to your HTML file
+
+```html
+<script type="module" src="./dist/aid-editor.min.js"></script>
+```
+
+And to use the component
+
+```html
+<aid-editor></aid-editor>
+```
 
 ## Setting OpenAI Environment Variable
 
@@ -95,78 +202,17 @@ To use the AID (AI-Driven Editor) web component, you'll need to set the `OPENAI_
 
     - Command Prompt
 
-    ```cmd
-    echo %OPENAI_API_KEY%
-    ```
+      ```cmd
+      echo %OPENAI_API_KEY%
+      ```
 
     - PowerShell:
 
-    ```powershell
-    echo $env:OPENAI_API_KEY
-    ```
+      ```powershell
+      echo $env:OPENAI_API_KEY
+      ```
 
-## Run Locally
-
-Clone the project
-
-```bash
-git clone https://github.com/smilee02/aid-editor.git
-```
-
-Go to the project directory
-
-```bash
-cd aid-editor
-```
-
-Install dependencies
-
-```bash
-npm install
-```
-
-Start the server
-
-```bash
-npm run build
-```
-
-Add to your HTML file
-
-```
-<script type="module" src="./dist/aid-editor.min.js"></script>
-```
-
-And to use the component
-
-```
-<aid-editor></aid-editor>
-```
-
-HTML file
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>A.I.D - AI-Driven Editor Demo</title>
-    <script type="module" src="./dist/aid-editor.min.js"></script>
-  </head>
-  <body>
-    <aid-editor></aid-editor>
-  </body>
-</html>
-```
-
-<br>
-
-**Note**
-
-You can try the existent index.html
-
-At the moment make sure you are running chrome using _--disable-web-security_
+<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- USAGE EXAMPLES -->
 
 ## Running Tests
 
@@ -176,21 +222,82 @@ To run tests, run the following command
 npm run test
 ```
 
-## Authors
+## Usage
 
-- [@Smilee](https://www.github.com/smilee02)
+To use the AID component, you can add the following HTML tag to your web page:
 
-## Support
+```html
+<aid-editor></aid-editor>
+```
 
-For support, open an issue on the GitHub repository.
+After adding the component, you'll be able to use its features for AI-driven writing and editing.
 
-## Tech Stack
+<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- ROADMAP -->
 
-Lit, HTML, CSS
+## Roadmap
 
-## TODO
+- [x] Basic AI-driven text editing
+- [x] Cross-platform compatibility
+- [x] Unlayer Compatibility
+- [ ] Test integration
+- [ ] Support for more languages
+- [ ] Support for more editors
 
-- Documentation
-- Testing different Editors
-- Redo README
-- Redo Tests
+See the open issues for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- CONTRIBUTING -->
+
+## Contributing
+
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Top contributors:
+
+<a href="https://github.com/smilee02/aid-editor/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=smilee02/aid-editor" alt="contrib.rocks image" />
+</a>
+
+<!-- CONTACT -->
+
+## Contact
+
+Project Link: [https://github.com/smilee02/aid-editor](https://github.com/smilee02/aid-editor)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Acknowledgments
+
+- [OpenAI](https://openai.com/)
+- [Lit][Lit-url]
+- [Othneildrew's Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
+[contributors-shield]: https://img.shields.io/github/contributors/smilee02/aid-editor.svg?style=for-the-badge
+[contributors-url]: https://github.com/smilee02/aid-editor/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/smilee02/aid-editor.svg?style=for-the-badge
+[forks-url]: https://github.com/smilee02/aid-editor/network/members
+[stars-shield]: https://img.shields.io/github/stars/smilee02/aid-editor.svg?style=for-the-badge
+[stars-url]: https://github.com/smilee02/aid-editor/stargazers
+[issues-shield]: https://img.shields.io/github/issues/smilee02/aid-editor.svg?style=for-the-badge
+[issues-url]: https://github.com/smilee02/aid-editor/issues
+[license-shield]: https://img.shields.io/github/license/smilee02/aid-editor.svg?style=for-the-badge
+[license-url]: https://github.com/smilee02/aid-editor/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/francisco-cardoso02/
+[product-screenshot]: images/Editor.png
+[Lit.dev]: https://img.shields.io/badge/LIt-4d64ff?&style=for-the-badge&logo=data:image/png;base64,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
+[Lit-url]: https://lit.dev/
