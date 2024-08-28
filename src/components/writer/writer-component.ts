@@ -13,6 +13,7 @@ import {
 } from "../../services/openai-service.js";
 import LocalizationService from "../../services/localization-service.js";
 import { GlobalStyles } from "../../styles/global-style.js";
+import rangy from "rangy";
 
 /**
  * @summary Writer component provides the main interface for creating, expanding, and shortening articles using AI-driven services.
@@ -221,6 +222,11 @@ export default class WriterComponent extends LitElement {
     return iframes;
   }
 
+  private getFirstRange(document: Document | HTMLIFrameElement) {
+    var sel = rangy.getSelection(document);
+    return sel.rangeCount ? sel.getRangeAt(0) : null;
+  }
+
   /**
    * Returns the text that was selected in the document
    * @returns {string}
@@ -231,30 +237,15 @@ export default class WriterComponent extends LitElement {
 
     if (iframes.length > 0) {
       for (let i = 0; i < iframes.length; i++) {
-        const contentWindow = iframes[i].contentWindow;
-
-        if (contentWindow) {
-          const selection = contentWindow.getSelection();
-          console.log(selection?.toString());
-
-          if (selection && selection.rangeCount > 0) {
-            const range = selection.getRangeAt(0);
-
-            let commonAncestor = range.commonAncestorContainer;
-
-            while (commonAncestor && commonAncestor.nodeName !== "DIV") {
-              commonAncestor = commonAncestor.parentElement!;
-            }
-
-            if (
-              commonAncestor &&
-              commonAncestor.nodeName === "DIV" &&
-              (commonAncestor as HTMLDivElement).isContentEditable
-            ) {
-              fullSelection += (commonAncestor as Element).innerHTML;
-            }
-          }
+        var htmlSelection = rangy.getSelection(iframes[i]).toHtml();
+        if (htmlSelection != "") {
+          fullSelection += htmlSelection;
         }
+      }
+    } else {
+      var htmlSelection = rangy.getSelection(document).toHtml();
+      if (htmlSelection != "") {
+        fullSelection += htmlSelection;
       }
     }
 
@@ -266,32 +257,32 @@ export default class WriterComponent extends LitElement {
    */
   private overwriteTextSelection() {
     const iframes = this.getAllIFrames();
+    if (this.generatedTextArea!.value != "") {
+      if (iframes.length > 0) {
+        for (let i = 0; i < iframes.length; i++) {
+          var range = this.getFirstRange(iframes[i]);
+          if (range) {
+            const htmlContent = this.generatedTextArea!.value;
 
-    if (iframes.length > 0) {
-      for (let i = 0; i < iframes.length; i++) {
-        const contentWindow = iframes[i].contentWindow;
-        const selection = contentWindow?.getSelection();
-
-        if (selection && selection.rangeCount > 0) {
-          const range = selection.getRangeAt(0);
-
-          let commonAncestor = range.commonAncestorContainer;
-
-          while (commonAncestor && commonAncestor.nodeName !== "DIV") {
-            commonAncestor = commonAncestor.parentElement!;
+            const fragment = document
+              .createRange()
+              .createContextualFragment(htmlContent);
+            range.deleteContents();
+            range.insertNode(fragment);
+            rangy.getSelection(iframes[i]).setSingleRange(range);
           }
+        }
+      } else {
+        var range = this.getFirstRange(document);
+        if (range) {
+          const htmlContent = this.generatedTextArea!.value;
 
-          if (
-            commonAncestor &&
-            commonAncestor.nodeName === "DIV" &&
-            (commonAncestor as HTMLDivElement).isContentEditable
-          ) {
-            const parentDiv = commonAncestor as HTMLElement;
-
-            parentDiv.innerHTML = "";
-
-            parentDiv.innerHTML = this.generatedTextArea!.value;
-          }
+          const fragment = document
+            .createRange()
+            .createContextualFragment(htmlContent);
+          range.deleteContents();
+          range.insertNode(fragment);
+          rangy.getSelection(document).setSingleRange(range);
         }
       }
     }
