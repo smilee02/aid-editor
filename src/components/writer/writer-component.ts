@@ -1,5 +1,5 @@
 import { html, LitElement } from "lit";
-import { property, query } from "lit/decorators.js";
+import { property, query, state } from "lit/decorators.js";
 import { WriterComponentStyle } from "./writer-component.style.js";
 import "../modal/modal-component.js";
 import "../toolbar/toolbar-component.js";
@@ -14,6 +14,7 @@ import {
 import LocalizationService from "../../services/localization-service.js";
 import { GlobalStyles } from "../../styles/global-style.js";
 import rangy from "rangy";
+import FroalaEditor from "froala-editor";
 
 /**
  * @summary Writer component provides the main interface for creating, expanding, and shortening articles using AI-driven services.
@@ -100,6 +101,23 @@ export default class WriterComponent extends LitElement {
   @property({ type: Boolean })
   isLoading: boolean = false;
 
+  /**
+   * Editor type
+   * @type {string}
+   */
+  @property({ type: String })
+  editorType = "";
+
+  /**
+   * Editor selector
+   * @type {string}
+   */
+  @property({ type: String })
+  editorSelector = "";
+
+  @state()
+  selectedText = "";
+
   /** Reference to the article theme input element.
    * @type {HTMLInputElement | undefined} -
    */
@@ -134,7 +152,13 @@ export default class WriterComponent extends LitElement {
    * Service for localization.
    * @type {LocalizationService}
    */
-  i18nextService: LocalizationService;
+  i18nextService: LocalizationService | undefined;
+
+  /**
+   * Editor instance
+   * @type {FroalaEditor | undefined}
+   */
+  editorInstance: FroalaEditor | undefined;
 
   constructor() {
     super();
@@ -150,11 +174,41 @@ export default class WriterComponent extends LitElement {
       this.showAlert.bind(this),
       this.showConfirm.bind(this)
     );
+    this.localeSetter();
+  }
 
+  firstUpdated() {
+    this.localeSetter();
+    this.detectEditor();
+  }
+
+  /**
+   * Sets the locale of the web component
+   */
+
+  private localeSetter() {
     if (this.locale) {
       this.i18nextService = LocalizationService.getInstance(this.locale);
     } else {
       this.i18nextService = LocalizationService.getInstance(navigator.language);
+    }
+  }
+
+  /**
+   * Detects the editor that is being used
+   */
+  private detectEditor() {
+    if (this.editorType != "" && this.editorSelector != "") {
+      var editorElement = this.shadowRoot!.querySelector(this.editorSelector);
+      if (this.editorType == "froala-editor") {
+        this.editorInstance = new FroalaEditor(this.editorSelector, {
+          events: {
+            initialized: () => {
+              this.editorInstance = (editorElement as any).froalaEditor;
+            },
+          },
+        });
+      }
     }
   }
 
@@ -172,7 +226,7 @@ export default class WriterComponent extends LitElement {
    */
   private handleLocaleChange(e: CustomEvent) {
     this.locale = e.detail.language;
-    this.i18nextService.setLocale(this.locale);
+    this.i18nextService!.setLocale(this.locale);
     this.performUpdate();
   }
 
@@ -187,12 +241,12 @@ export default class WriterComponent extends LitElement {
         getOpenAIInstance();
         this.performUpdate();
         if (this.generatedTextArea) {
-          var text = this.getTextSelection();
+          var text = this.getTextSelectedFromEditor();
           this.generatedTextArea!.value = text;
         }
       } else {
         clearOpenAIInstance();
-        this.overwriteTextSelection();
+        this.replaceSelectedTextFromEditor();
       }
     } catch (error) {
       this.showAlert((error as Error).message);
@@ -225,6 +279,38 @@ export default class WriterComponent extends LitElement {
   private getFirstRange(document: Document | HTMLIFrameElement) {
     var sel = rangy.getSelection(document);
     return sel.rangeCount ? sel.getRangeAt(0) : null;
+  }
+
+  /**
+   * Return the text of an editor
+   * @return {string}
+   */
+  private getTextSelectedFromEditor() {
+    if (this.editorInstance && this.editorType == "froala-editor") {
+      var text = this.editorInstance.html.getSelected();
+    } else {
+      var text = this.getTextSelection();
+    }
+    this.selectedText = text;
+    return text;
+  }
+
+  private replaceSelectedTextFromEditor() {
+    if (this.editorInstance && this.editorType == "froala-editor") {
+      var editorText = this.editorInstance.html.get();
+      if (editorText != "") {
+        editorText = editorText.replace(
+          this.selectedText,
+          this.generatedTextArea!.value
+        );
+      } else {
+        editorText = this.generatedTextArea!.value;
+      }
+
+      this.editorInstance.html.set(editorText);
+    } else {
+      this.overwriteTextSelection();
+    }
   }
 
   /**
@@ -399,7 +485,7 @@ export default class WriterComponent extends LitElement {
       part="assistant-button"
       @click=${this.toggleOverlay}
     >
-      ${this.i18nextService.t("writer.buttons.assistant")}
+      ${this.i18nextService!.t("writer.buttons.assistant")}
     </button>`;
   }
 
@@ -445,16 +531,16 @@ export default class WriterComponent extends LitElement {
             <div class="theme-overlay" part="theme-overlay" @click="${(
               e: Event
             ) => e.stopPropagation()}">
-              <h1 class="theme-title" part="theme-title">${this.i18nextService.t(
+              <h1 class="theme-title" part="theme-title">${this.i18nextService!.t(
                 "writer.overlays.themeTitle"
               )}</h1>
-              <input id="article-theme" part="article-theme" placeholder=${this.i18nextService.t(
+              <input id="article-theme" part="article-theme" placeholder=${this.i18nextService!.t(
                 "writer.overlays.themePlaceholder"
               )}></input>
               <button class="theme-button" part="theme-button" @click="${
                 this.generateArticle
               }">
-                ${this.i18nextService.t("writer.buttons.generate")}
+                ${this.i18nextService!.t("writer.buttons.generate")}
               </button>
             </div>
           </div>
@@ -473,7 +559,7 @@ export default class WriterComponent extends LitElement {
         id="text-area-generated"
         class="generated-text"
         part="generated-text"
-        placeholder=${this.i18nextService.t(
+        placeholder=${this.i18nextService!.t(
           "writer.overlays.generatedTextPlaceholder"
         )}
       ></textarea>

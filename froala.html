@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A.I.D - AI-Driven Editor Demo</title>
+    <script type="module" src="./dist/aid-editor.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/froala-editor@latest/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/froala-editor@latest/js/froala_editor.pkgd.min.js"></script>
+    
+  </head>
+  <body>
+    <aid-editor editorType="froala-editor" editorSelector="#editor-container"></aid-editor>
+    <div id="editor-container"></div>
+    <script>
+        var editor = new FroalaEditor('#editor-container');
+      </script>
+</body>
+</html>

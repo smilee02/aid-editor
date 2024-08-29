@@ -239,6 +239,7 @@ After adding the component, you'll be able to use its features for AI-driven wri
 - [x] Basic AI-driven text editing
 - [x] Cross-platform compatibility
 - [x] Unlayer Compatibility
+- [x] Froala Compatibility
 - [ ] Test integration
 - [ ] Support for more languages
 - [ ] Support for more editors
