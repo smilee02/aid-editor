@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/rangy": "^0.0.38",
+    "ckeditor5": "^43.0.0",
     "dotenv": "^16.4.5",
     "esbuild": "^0.23.0",
     "froala-editor": "^4.2.1",

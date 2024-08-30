@@ -1,10 +1,8 @@
 <a id="readme-top"></a>
 
-<!-- *** Thanks for checking out the Best-README-Template. If you have a suggestion *** that would make this better, please fork the repo and create a pull request *** or simply open an issue with the tag "enhancement". *** Don't forget to give the project a star! *** Thanks again! Now go create something AMAZING! :D --> <!-- PROJECT SHIELDS --> <!-- *** I'm using markdown "reference style" links for readability. *** Reference links are enclosed in brackets [ ] instead of parentheses ( ). *** See the bottom of this document for the declaration of the reference variables *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use. *** https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-
 [![Contributors][contributors-shield]][contributors-url] [![Forks][forks-shield]][forks-url] [![Stargazers][stars-shield]][stars-url] [![Issues][issues-shield]][issues-url] [![MIT License][license-shield]][license-url] [![LinkedIn][linkedin-shield]][linkedin-url]
+<br />
 
-<!-- PROJECT LOGO --> <br />
 <div align="center"> 
   <a href="https://github.com/smilee02/aid-editor"> <img src="images/logo.png" alt="Logo" width="80" height="80"> 
   </a> 
@@ -50,7 +48,6 @@
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
- <!-- ABOUT THE PROJECT -->
 
 ## About The Project
 
@@ -64,6 +61,19 @@ AID is a web component developed in Lit that helps make writing and editing easi
 - Cross-platform compatibility
 - Write Articles, Expand Content, Shorten Content
 - Highly Customizable
+- Available in Different Languages
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Editor Compatibility
+
+AID-Editor is designed to work seamlessly with popular text editors. Here is a list of currently supported editors:
+
+- **Unlayer Editor**: Compatible (Not compatible with HTML)
+- **Froala Editor**: Compatible
+- **CKEditor5**: Compatible
+
+Support for more editors is on the roadmap. If you have a specific editor in mind that you would like to see supported, please open an issue or contribute to the project.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -73,7 +83,7 @@ AID is a web component developed in Lit that helps make writing and editing easi
 - ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 - ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- GETTING STARTED -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
 
@@ -212,7 +222,7 @@ To use the AID (AI-Driven Editor) web component, you'll need to set the `OPENAI_
       echo $env:OPENAI_API_KEY
       ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- USAGE EXAMPLES -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Running Tests
 
@@ -232,7 +242,64 @@ To use the AID component, you can add the following HTML tag to your web page:
 
 After adding the component, you'll be able to use its features for AI-driven writing and editing.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- ROADMAP -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Custom Events on Editor Initialization
+
+To integrate the web component with the editor, when it is initialized or created, you need to dispatch a `CustomEvent` with the `editor-initialized` event name.
+
+### CKEditor 5
+
+For CKEditor 5, you can listen for the editor's initialization event by using the `ClassicEditor.create` method and dispatching a custom event when the editor instance is ready.
+
+```js
+import { ClassicEditor } from "ckeditor5";
+
+ClassicEditor.create(document.querySelector(".selector"), editorConfig)
+  .then((editor) => {
+    document.dispatchEvent(
+      new CustomEvent("editor-initialized", { detail: editor })
+    );
+  })
+  .catch((error) => {
+    console.error(error);
+  });
+```
+
+In this example, after CKEditor 5 is successfully created, a `CustomEvent` named `editor-initialized` is dispatched with the editor instance attached as the event detail.
+
+### Froala Editor
+
+For Froala Editor, you can listen for the `initialized` event provided by the editor and dispatch a custom event when the editor instance is ready.
+
+```js
+var editor = new FroalaEditor("#editor-container", {
+  events: {
+    initialized: () => {
+      document.dispatchEvent(
+        new CustomEvent("editor-initialized", { detail: editor })
+      );
+    },
+  },
+});
+```
+
+In this example, once Froala Editor is initialized, a `CustomEvent` named `editor-initialized` is dispatched with the editor instance attached as the event detail.
+
+The `CustomEvent` must be named `editor-initialized` and send in the `detail` the `editor`
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Known Bugs
+
+Here are some of the currently known bugs in AID:
+
+- **Bug 1**: **Unexpected `<p>` and `<br>` Tag Placement**  
+  When opening or closing the assistant, additional `<p>` (paragraph) and `<br>` (line break) tags may be inserted unexpectedly. This behavior is dependent on the specific editor configuration and can result in unwanted formatting.
+
+If you encounter any other bugs, please report them [here](https://github.com/smilee02/aid-editor/issues/new?labels=bug&template=bug-report---.md).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Roadmap
 
@@ -240,13 +307,14 @@ After adding the component, you'll be able to use its features for AI-driven wri
 - [x] Cross-platform compatibility
 - [x] Unlayer Compatibility
 - [x] Froala Compatibility
+- [x] CKEditor5 Compatibility
 - [ ] Test integration
 - [ ] Support for more languages
 - [ ] Support for more editors
 
 See the open issues for a full list of proposed features (and known issues).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p> <!-- CONTRIBUTING -->
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contributing
 
@@ -268,8 +336,6 @@ If you have a suggestion that would make this better, please fork the repo and c
   <img src="https://contrib.rocks/image?repo=smilee02/aid-editor" alt="contrib.rocks image" />
 </a>
 
-<!-- CONTACT -->
-
 ## Contact
 
 Project Link: [https://github.com/smilee02/aid-editor](https://github.com/smilee02/aid-editor)
@@ -283,9 +349,6 @@ Project Link: [https://github.com/smilee02/aid-editor](https://github.com/smilee
 - [Othneildrew's Best-README-Template](https://github.com/othneildrew/Best-README-Template)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [contributors-shield]: https://img.shields.io/github/contributors/smilee02/aid-editor.svg?style=for-the-badge
 [contributors-url]: https://github.com/smilee02/aid-editor/graphs/contributors

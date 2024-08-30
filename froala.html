@@ -13,7 +13,13 @@
     <aid-editor editorType="froala-editor" editorSelector="#editor-container"></aid-editor>
     <div id="editor-container"></div>
     <script>
-        var editor = new FroalaEditor('#editor-container');
+        var editor = new FroalaEditor('#editor-container', {
+          events: {
+            initialized: () => {
+              document.dispatchEvent(new CustomEvent('editor-initialized', { detail: editor }));
+            },
+          },
+        });
       </script>
 </body>
 </html>

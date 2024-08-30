@@ -15,7 +15,7 @@ import LocalizationService from "../../services/localization-service.js";
 import { GlobalStyles } from "../../styles/global-style.js";
 import rangy from "rangy";
 import FroalaEditor from "froala-editor";
-
+import { ClassicEditor } from "ckeditor5";
 /**
  * @summary Writer component provides the main interface for creating, expanding, and shortening articles using AI-driven services.
  * @description The Writer component allows users to generate content, expand or shorten existing text, within the AID Editor. It also includes modals for alerts and confirmations.
@@ -158,7 +158,7 @@ export default class WriterComponent extends LitElement {
    * Editor instance
    * @type {FroalaEditor | undefined}
    */
-  editorInstance: FroalaEditor | undefined;
+  editorInstance: FroalaEditor | ClassicEditor | undefined;
 
   constructor() {
     super();
@@ -178,14 +178,31 @@ export default class WriterComponent extends LitElement {
   }
 
   firstUpdated() {
-    this.localeSetter();
-    this.detectEditor();
+    this.addEditorEvent();
+  }
+
+  /**
+   * Checks if it is a CustomEvent
+   * @param event Custom event sent from the document
+   * @returns @type {boolean}
+   */
+  private isCustomEvent(event: Event): event is CustomEvent {
+    return "detail" in event;
+  }
+
+  /**
+   * Listens for the event when a editor is initialized
+   */
+  private addEditorEvent() {
+    document.addEventListener("editor-initialized", (event: Event) => {
+      if (!this.isCustomEvent(event)) console.warn("not a custom event");
+      this.handleEditorEventsInitialized(event as CustomEvent);
+    });
   }
 
   /**
    * Sets the locale of the web component
    */
-
   private localeSetter() {
     if (this.locale) {
       this.i18nextService = LocalizationService.getInstance(this.locale);
@@ -194,21 +211,19 @@ export default class WriterComponent extends LitElement {
     }
   }
 
-  /**
-   * Detects the editor that is being used
-   */
-  private detectEditor() {
-    if (this.editorType != "" && this.editorSelector != "") {
-      var editorElement = this.shadowRoot!.querySelector(this.editorSelector);
-      if (this.editorType == "froala-editor") {
-        this.editorInstance = new FroalaEditor(this.editorSelector, {
-          events: {
-            initialized: () => {
-              this.editorInstance = (editorElement as any).froalaEditor;
-            },
-          },
-        });
-      }
+  private handleEditorEventsInitialized(event: CustomEvent) {
+    //CKEditor5
+    if ((event.detail as ClassicEditor) && this.editorType == "ckeditor5") {
+      this.editorInstance = event.detail;
+      console.log("CKEditor instance set:", this.editorInstance);
+    }
+    //Froala
+    else if (
+      (event.detail as FroalaEditor) &&
+      this.editorType == "froala-editor"
+    ) {
+      this.editorInstance = event.detail;
+      console.log("Froala instance set:", this.editorInstance);
     }
   }
 
@@ -286,18 +301,27 @@ export default class WriterComponent extends LitElement {
    * @return {string}
    */
   private getTextSelectedFromEditor() {
+    //Froala
     if (this.editorInstance && this.editorType == "froala-editor") {
-      var text = this.editorInstance.html.getSelected();
+      var text = (this.editorInstance as FroalaEditor).html.getSelected();
+    }
+    //CKEditor5
+    else if (this.editorInstance && this.editorType == "ckeditor5") {
+      var text = this.getTextSelectionInDocument();
     } else {
-      var text = this.getTextSelection();
+      var text = this.getTextSelectionInDocument();
     }
     this.selectedText = text;
     return text;
   }
 
+  /**
+   * Replaces the text that was selected in the editor
+   */
   private replaceSelectedTextFromEditor() {
+    //Froala
     if (this.editorInstance && this.editorType == "froala-editor") {
-      var editorText = this.editorInstance.html.get();
+      var editorText = (this.editorInstance as FroalaEditor).html.get();
       if (editorText != "") {
         editorText = editorText.replace(
           this.selectedText,
@@ -307,9 +331,29 @@ export default class WriterComponent extends LitElement {
         editorText = this.generatedTextArea!.value;
       }
 
-      this.editorInstance.html.set(editorText);
+      (this.editorInstance as FroalaEditor).html.set(editorText);
+    } //CKEditor5
+    else if (this.editorInstance && this.editorType == "ckeditor5") {
+      var model = (this.editorInstance as ClassicEditor).model;
+      model.change((writer) => {
+        const selection = model.document.selection;
+        const range = selection.getFirstRange();
+
+        if (range) {
+          writer.remove(range);
+
+          const viewFragment = (
+            this.editorInstance as ClassicEditor
+          ).data.processor.toView(this.generatedTextArea!.value);
+          const modelFragment = (
+            this.editorInstance as ClassicEditor
+          ).data.toModel(viewFragment);
+
+          model.insertContent(modelFragment, range.start);
+        }
+      });
     } else {
-      this.overwriteTextSelection();
+      this.overwriteTextSelectionInDocument();
     }
   }
 
@@ -317,7 +361,7 @@ export default class WriterComponent extends LitElement {
    * Returns the text that was selected in the document
    * @returns {string}
    */
-  private getTextSelection(): string {
+  private getTextSelectionInDocument(): string {
     const iframes = this.getAllIFrames();
     let fullSelection = "";
 
@@ -339,9 +383,9 @@ export default class WriterComponent extends LitElement {
   }
 
   /**
-   * Overwrites the text that was selected
+   * Overwrites the text that was selected in the document
    */
-  private overwriteTextSelection() {
+  private overwriteTextSelectionInDocument() {
     const iframes = this.getAllIFrames();
     if (this.generatedTextArea!.value != "") {
       if (iframes.length > 0) {
