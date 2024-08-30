@@ -14,8 +14,8 @@
     </a> 
     <br /> 
     <br /> 
-    <a href="https://github.com/smilee02/aid-editor">View Demo</a>
-    · 
+    <!--<a href="https://github.com/smilee02/aid-editor">View Demo</a>
+    · -->
     <a href="https://github.com/smilee02/aid-editor/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     · 
     <a href="https://github.com/smilee02/aid-editor/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
@@ -240,8 +240,23 @@ To use the AID component, you can add the following HTML tag to your web page:
 <aid-editor></aid-editor>
 ```
 
-After adding the component, you'll be able to use its features for AI-driven writing and editing.
+By default, this will set up the editor with default settings. However, you can customize the editor by specifying the type of editor and the selector for the editor container.
 
+### Specifying Editor Type and Selector
+
+You can customize which editor to use and where to place it by using the `editorType` and `editorSelector` attributes.
+
+#### CKEditor5
+
+```html
+<aid-editor editorType="ckeditor5" editorSelector="#editor-container" ></aid-editor>
+```
+
+#### Froala Editor
+
+```html
+<aid-editor editorType="froala-editor" editorSelector="#editor-container"></aid-editor>
+```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Custom Events on Editor Initialization
