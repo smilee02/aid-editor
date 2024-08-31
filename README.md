@@ -4,7 +4,7 @@
 <br />
 
 <div align="center"> 
-  <a href="https://github.com/smilee02/aid-editor"> <img src="images/logo.png" alt="Logo" width="80" height="80"> 
+  <a href="https://github.com/smilee02/aid-editor"> <img src="images/logo.png" alt="Logo" width="200" height="160"> 
   </a> 
   <h3 align="center">AID - AI-Driven Editor</h3> 
   <p align="center"> AID is a web component developed in Lit that helps make writing and editing easier using artificial intelligence. With AID, you can quickly generate new content and improve existing text.    
